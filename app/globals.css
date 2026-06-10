@@ -32,6 +32,7 @@
   --nav-h: 48px;
   --maxw: 1024px;
   --maxw-wide: 1180px;
+  --maxw-bento: 1440px; /* showcase tile grid — wider than text, but capped */
   --font: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display",
     "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "SF Mono", ui-monospace, Menlo, monospace;
@@ -446,7 +447,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .home-hero.on-light :focus-visible { outline-color: var(--ink); }
 
 /* Showcase tiles grid (gun families) */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; max-width: var(--maxw-bento); margin-inline: auto; }
 .tile {
   position: relative;
   border-radius: var(--radius);
