@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CategoryPills from "@/components/product/CategoryPills";
+import CategoryHero from "@/components/product/CategoryHero";
 import ProductGrid from "@/components/product/ProductGrid";
 import { catalog } from "@/lib/commerce";
+import { categoryContent } from "@/lib/content/categories";
 
 export const revalidate = 300;
 export const dynamicParams = true;
@@ -32,13 +34,18 @@ export default async function CategoryPage({ params }: Props) {
     catalog.getCategories(),
   ]);
 
+  const content = categoryContent(slug);
+  const heroImage = content.heroImage ?? products.find((p) => p.images[0])?.images[0]?.src;
+
   return (
     <>
-      <div className="page-head">
-        <p className="eyebrow">Store</p>
-        <h1>{category.name}</h1>
-        {category.description && <p className="desc">{category.description}</p>}
-      </div>
+      <CategoryHero
+        name={category.name}
+        tagline={content.tagline || category.description}
+        count={products.length}
+        heroImage={heroImage}
+        repSlug={products[0]?.slug}
+      />
       <CategoryPills categories={categories} active={slug} />
       <ProductGrid products={products} />
     </>

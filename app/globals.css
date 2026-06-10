@@ -595,6 +595,32 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 /* ===================================================================
    Shop (white grid) + category pills
    =================================================================== */
+/* Category hero (split) */
+.cat-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; max-width: var(--maxw-wide); margin: 0 auto; padding: clamp(40px,6vw,72px) 24px clamp(20px,3vw,32px); }
+.cat-hero-text .eyebrow { color: var(--accent); }
+.cat-hero-text h1 { font-size: clamp(40px, 6vw, 68px); margin-top: 8px; }
+.cat-hero-text .lede { margin-top: 12px; max-width: 36ch; }
+.cat-hero-count { margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+.cat-hero-art { background: var(--bg-soft); border-radius: var(--radius-lg); padding: 36px; display: flex; align-items: center; justify-content: center; }
+.cat-hero-art img, .cat-hero-art svg { width: 100%; max-width: 460px; height: auto; aspect-ratio: 1; object-fit: contain; }
+.cat-hero-art img { mix-blend-mode: multiply; }
+@media (max-width: 834px) { .cat-hero { grid-template-columns: 1fr; gap: 8px; text-align: center; } .cat-hero-text .lede, .cat-hero-text h1 { margin-left: auto; margin-right: auto; } .cat-hero-art { order: -1; } }
+
+/* Shop: category tiles */
+.cat-tiles-wrap { padding: clamp(28px,4vw,44px) 0 8px; }
+.cat-tiles-title, .shop-all-title { font-size: clamp(20px,2.4vw,26px); margin-bottom: 18px; }
+.shop-all-title { max-width: var(--maxw-wide); margin: clamp(40px,6vw,64px) auto 4px; padding: 0 24px; }
+.cat-tiles { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+.cat-tile { background: var(--bg-soft); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease; }
+.cat-tile:hover { transform: translateY(-4px); box-shadow: 0 14px 30px -16px rgba(0,0,0,0.22); }
+.cat-tile-art { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+.cat-tile-art img, .cat-tile-art svg { width: 86%; height: 86%; object-fit: contain; }
+.cat-tile-art img { mix-blend-mode: multiply; }
+.cat-tile-name { font-size: 13px; font-weight: 600; }
+.cat-tile-count { font-size: 11px; color: var(--ink-3); }
+@media (max-width: 1024px) { .cat-tiles { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px) { .cat-tiles { grid-template-columns: repeat(2, 1fr); } }
+
 .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 26px 24px 8px; }
 .pill { font-size: 14px; padding: 8px 18px; border-radius: 980px; background: var(--bg-soft); color: var(--ink); transition: background 0.2s, color 0.2s; }
 .pill:hover { background: #e8e8ed; }
