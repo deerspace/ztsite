@@ -16,10 +16,10 @@ const COLUMNS = [
   {
     title: "Support",
     links: [
-      { label: "Warranty", href: "#" },
-      { label: "Manuals", href: "#" },
-      { label: "Shipping & Returns", href: "#" },
-      { label: "FFL Transfers", href: "#" },
+      { label: "Warranty & Returns", href: "/warranty" },
+      { label: "Product Registration", href: "/register" },
+      { label: "Instructional Videos", href: "/videos" },
+      { label: "Purchasing Firearms FAQ", href: "/firearms-faq" },
       { label: "Contact", href: "#" },
     ],
   },
@@ -27,8 +27,8 @@ const COLUMNS = [
     title: "Company",
     links: [
       { label: "About ZEV", href: "#" },
-      { label: "Dealers", href: "#" },
-      { label: "Newsroom", href: "#" },
+      { label: "Dealer Locator", href: "/dealers" },
+      { label: "Become a Dealer", href: "/become-a-dealer" },
       { label: "Careers", href: "#" },
     ],
   },

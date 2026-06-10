@@ -269,6 +269,14 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .mega-links { display: flex; flex-direction: column; gap: 12px; }
 .mega-links a { font-size: 14px; color: var(--on-dark-2); transition: color 0.2s; }
 .mega-links a:hover { color: #fff; }
+
+/* Store dropdown — Apple-style text columns (large shop links + quick links) */
+.mega-store-inner { display: grid; grid-template-columns: minmax(260px, 380px) minmax(220px, 320px); gap: clamp(48px, 9vw, 130px); align-items: start; }
+.mega-store-col .mega-col-title { margin-bottom: 18px; }
+.mega-shop-links { display: flex; flex-direction: column; gap: 14px; }
+.mega-shop-links a { font-size: clamp(22px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.015em; color: #f5f5f7; transition: color 0.2s ease, opacity 0.2s ease; }
+.mega-shop-links a:hover { color: #fff; }
+@media (max-width: 640px) { .mega-store-inner { grid-template-columns: 1fr; gap: 32px; } }
 /* The .nav header's backdrop-filter makes it the containing block for these
    fixed children, so full-bleed overlays need viewport-based heights. */
 .mega-overlay { position: fixed; top: var(--nav-h); left: 0; right: 0; height: 100vh; z-index: 1000; background: rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.28s, visibility 0.28s; }
@@ -610,6 +618,26 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 /* ===================================================================
    Shop (white grid) + category pills
    =================================================================== */
+/* Store landing (apple.com/store style) */
+.store-hero { max-width: var(--maxw-wide); margin: 0 auto; padding: clamp(48px,7vw,84px) 24px clamp(28px,4vw,44px); }
+.store-hero h1 { font-size: clamp(28px, 4vw, 48px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; max-width: 20ch; color: var(--ink-2); }
+.store-hero-strong { color: var(--ink); }
+.store-hero .lede { margin-top: 14px; }
+.store-section { padding: clamp(28px,4vw,48px) 0; }
+.store-section-title { font-size: clamp(24px,3vw,34px); margin-bottom: 24px; max-width: var(--maxw-wide); }
+.store-section .wrap-wide > .store-section-title { padding: 0; }
+.store-assurance { padding-top: clamp(20px,3vw,36px); padding-bottom: clamp(80px,11vw,120px); }
+.help-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.help-card { display: flex; align-items: center; gap: 16px; background: var(--bg-soft); border-radius: var(--radius); padding: 22px 24px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease; }
+.help-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px -18px rgba(0,0,0,0.22); }
+.help-icon { color: var(--ink); flex: none; }
+.help-icon svg { width: 30px; height: 30px; }
+.help-text { display: flex; flex-direction: column; flex: 1; line-height: 1.3; }
+.help-label { font-size: 16px; font-weight: 600; }
+.help-sub { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.help-arrow { color: var(--ink-3); font-size: 20px; }
+@media (max-width: 834px) { .help-grid { grid-template-columns: 1fr; } }
+
 /* Category hero (split) */
 .cat-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; max-width: var(--maxw-wide); margin: 0 auto; padding: clamp(56px,8vw,90px) 24px clamp(20px,3vw,32px); }
 .cat-hero-text .eyebrow { color: var(--accent); }
@@ -771,6 +799,78 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .stub-card .line + .line { margin-top: 16px; }
 .stub-note { margin-top: 24px; font-size: 14px; line-height: 1.6; color: var(--ink-2); text-align: left; }
 .stub-note code { font-family: var(--mono); font-size: 12px; background: var(--bg-soft); padding: 1px 5px; border-radius: 4px; }
+
+/* ===================================================================
+   Support / info pages (warranty, FAQ, dealers, register, videos…)
+   =================================================================== */
+.info-wrap { max-width: 760px; margin: 0 auto; padding: 0 24px clamp(90px,12vw,130px); }
+.info-wrap-wide { max-width: var(--maxw-wide); margin: 0 auto; padding: 0 24px clamp(90px,12vw,130px); }
+.prose h2 { font-size: clamp(22px,2.6vw,30px); margin: clamp(36px,5vw,52px) 0 12px; }
+.prose h2:first-child { margin-top: 0; }
+.prose p { font-size: 17px; line-height: 1.6; color: var(--ink-2); margin-bottom: 14px; }
+.prose ul { margin: 0 0 14px; padding-left: 22px; }
+.prose li { font-size: 17px; line-height: 1.6; color: var(--ink-2); margin-bottom: 8px; }
+.prose a { color: var(--blue); }
+.prose a:hover { text-decoration: underline; }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* FAQ — native disclosure */
+.faq { max-width: 760px; margin: 0 auto; padding: 0 24px clamp(90px,12vw,130px); }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; font-size: 18px; font-weight: 500; color: var(--ink); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary .faq-plus { flex: none; width: 22px; height: 22px; position: relative; transition: transform 0.3s ease; }
+.faq-item summary .faq-plus::before, .faq-item summary .faq-plus::after { content: ""; position: absolute; background: var(--ink-2); border-radius: 2px; }
+.faq-item summary .faq-plus::before { top: 10px; left: 2px; right: 2px; height: 2px; }
+.faq-item summary .faq-plus::after { left: 10px; top: 2px; bottom: 2px; width: 2px; transition: opacity 0.3s ease; }
+.faq-item[open] summary .faq-plus::after { opacity: 0; }
+.faq-item[open] summary .faq-plus { transform: rotate(180deg); }
+.faq-answer { padding: 0 0 24px; font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 64ch; }
+.faq-answer p + p { margin-top: 12px; }
+
+/* Forms (register, become-a-dealer, dealer search) */
+.form-card { max-width: 640px; margin: 0 auto; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.field input, .field select, .field textarea { font-family: inherit; font-size: 15px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); transition: border-color 0.2s; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--ink); }
+.form-actions { margin-top: 22px; display: flex; align-items: center; gap: 16px; }
+.form-thanks { background: var(--bg-soft); border-radius: var(--radius); padding: 28px; text-align: center; }
+.form-thanks h3 { font-size: 22px; margin-bottom: 8px; }
+.form-thanks p { color: var(--ink-2); font-size: 15px; }
+.form-note { font-size: 12px; color: var(--ink-3); margin-top: 16px; line-height: 1.5; max-width: 60ch; }
+
+/* Become a dealer — benefits */
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; text-align: center; }
+.benefits-grid .benefit h4 { font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+.benefits-grid .benefit p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+@media (max-width: 834px) { .benefits-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Dealer locator */
+.dealer-search { display: flex; gap: 10px; max-width: 480px; margin: 0 auto; }
+.dealer-search input { flex: 1; border: 1px solid var(--line); border-radius: 980px; padding: 13px 20px; font-family: inherit; font-size: 16px; }
+.dealer-search input:focus { outline: none; border-color: var(--ink); }
+.dealer-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: var(--maxw); margin: clamp(36px,5vw,52px) auto 0; }
+.dealer-card { background: var(--bg-soft); border-radius: var(--radius); padding: 22px 24px; }
+.dealer-card h3 { font-size: 17px; }
+.dealer-card p { font-size: 14px; color: var(--ink-2); margin-top: 4px; line-height: 1.5; }
+.dealer-card .dealer-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } .dealer-list { grid-template-columns: 1fr; } }
+
+/* Instructional videos */
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: var(--maxw-wide); margin: 0 auto; padding: 0 24px clamp(90px,12vw,130px); }
+.video-card { display: block; }
+.video-thumb { position: relative; background: var(--dark-soft); border-radius: var(--radius); aspect-ratio: 16/9; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.78; transition: opacity 0.3s, transform 0.4s; }
+.video-card:hover .video-thumb img { opacity: 0.9; transform: scale(1.04); }
+.video-play { position: absolute; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; }
+.video-play::after { content: ""; border-left: 16px solid var(--ink); border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+.video-card h3 { font-size: 16px; margin-top: 12px; }
+.video-meta { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+@media (max-width: 834px) { .video-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .video-grid { grid-template-columns: 1fr; } }
 
 /* 404 */
 .nf { text-align: center; padding: clamp(120px,18vw,180px) 24px; }
