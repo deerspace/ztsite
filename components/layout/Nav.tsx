@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ZevLogo from "@/components/art/ZevLogo";
 import SearchOverlay from "@/components/search/SearchOverlay";
 import { useCart } from "@/components/cart/CartProvider";
+
+// useLayoutEffect on the client, useEffect on the server (avoids the SSR warning).
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface NavLink {
   label: string;
@@ -93,13 +96,41 @@ const PRODUCT_MENUS: ProductMenu[] = [
 
 const STORE_ROUTES = ["/store", "/shop", "/category", "/product", "/dealers", "/warranty", "/register", "/become-a-dealer", "/firearms-faq", "/videos", "/cart", "/checkout"];
 
+interface Column {
+  title: string;
+  links: NavLink[];
+  large: boolean;
+}
+
+// The two columns to render for a given open menu key.
+function menuColumns(key: string | null): Column[] | null {
+  if (!key) return null;
+  if (key === "store") {
+    return [
+      { title: "Shop", links: STORE_SHOP, large: true },
+      { title: "Quick Links", links: STORE_QUICK, large: false },
+    ];
+  }
+  const m = PRODUCT_MENUS.find((p) => p.key === key);
+  if (!m) return null;
+  return [
+    { title: m.exploreTitle, links: m.explore, large: true },
+    { title: m.shopTitle, links: m.shop, large: false },
+  ];
+}
+
 export default function Nav() {
   const [open, setOpen] = useState<string | null>(null);
+  // The menu whose content is currently rendered — held during the close
+  // animation so content doesn't vanish before the panel collapses.
+  const [shown, setShown] = useState<string | null>(null);
+  const [panelHeight, setPanelHeight] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [bump, setBump] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const prevCount = useRef(0);
   const pathname = usePathname();
   const { cart, ready, openMiniCart } = useCart();
@@ -120,10 +151,22 @@ export default function Nav() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setOpen(which);
   };
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
   const scheduleClose = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setOpen(null), 160);
   };
+
+  // Keep the rendered content in sync while open; hold it during close.
+  useEffect(() => { if (open) setShown(open); }, [open]);
+
+  // Measure the active content and drive the panel height so switching menus
+  // animates height only — the panel background never re-fades.
+  useIsoLayoutEffect(() => {
+    if (open && contentRef.current) setPanelHeight(contentRef.current.scrollHeight);
+  }, [open, shown]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -149,6 +192,8 @@ export default function Nav() {
 
   const activeProduct = PRODUCT_MENUS.find((m) => pathname.includes(m.match));
   const inStore = !activeProduct && STORE_ROUTES.some((r) => pathname.startsWith(r));
+  // Render from `open` immediately; fall back to the held `shown` while closing.
+  const columns = menuColumns(open ?? shown);
 
   return (
     <>
@@ -199,60 +244,31 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Store — Apple-style text columns */}
+      {/* One persistent flyout — switching nav items swaps content and animates
+          height only; the panel background never re-fades. */}
       <div
-        className={`mega${open === "store" ? " open" : ""}`}
-        onMouseEnter={() => openMenu("store")}
+        className={`mega${open ? " open" : ""}`}
+        style={{ height: open ? panelHeight : 0 }}
+        onMouseEnter={cancelClose}
         onMouseLeave={scheduleClose}
       >
-        <div className="mega-inner mega-store-inner">
-          <div className="mega-store-col">
-            <p className="mega-col-title">Shop</p>
-            <div className="mega-shop-links">
-              {STORE_SHOP.map((l) => (
-                <Link key={l.label} href={l.href}>{l.label}</Link>
+        <div ref={contentRef}>
+          {columns && (
+            <div className="mega-inner mega-store-inner">
+              {columns.map((col) => (
+                <div className="mega-store-col" key={col.title}>
+                  <p className="mega-col-title">{col.title}</p>
+                  <div className={col.large ? "mega-shop-links" : "mega-links"}>
+                    {col.links.map((l) => (
+                      <Link key={l.label} href={l.href}>{l.label}</Link>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-          <div className="mega-store-col">
-            <p className="mega-col-title">Quick Links</p>
-            <div className="mega-links">
-              {STORE_QUICK.map((l) => (
-                <Link key={l.label} href={l.href}>{l.label}</Link>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
       </div>
-
-      {/* Per-product menus — Explore + Shop columns */}
-      {PRODUCT_MENUS.map((m) => (
-        <div
-          key={m.key}
-          className={`mega${open === m.key ? " open" : ""}`}
-          onMouseEnter={() => openMenu(m.key)}
-          onMouseLeave={scheduleClose}
-        >
-          <div className="mega-inner mega-store-inner">
-            <div className="mega-store-col">
-              <p className="mega-col-title">{m.exploreTitle}</p>
-              <div className="mega-shop-links">
-                {m.explore.map((l) => (
-                  <Link key={l.label} href={l.href}>{l.label}</Link>
-                ))}
-              </div>
-            </div>
-            <div className="mega-store-col">
-              <p className="mega-col-title">{m.shopTitle}</p>
-              <div className="mega-links">
-                {m.shop.map((l) => (
-                  <Link key={l.label} href={l.href}>{l.label}</Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 

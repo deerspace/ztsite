@@ -245,12 +245,13 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   /* Opaque, same colour as the open nav bar — one continuous block. */
   background: var(--nav-bg);
   z-index: 1001;
+  overflow: hidden;
+  height: 0;            /* driven inline; switching menus animates height only */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
-  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+  transition: height 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.25s ease, visibility 0.4s;
 }
-.mega.open { opacity: 1; visibility: visible; transform: none; }
+.mega.open { opacity: 1; visibility: visible; }
 .mega-inner { max-width: var(--maxw-wide); margin: 0 auto; padding: 34px 24px 42px; }
 .mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
 .mega-col-title { font-size: 12px; color: var(--on-dark-2); margin-bottom: 14px; font-weight: 400; }
