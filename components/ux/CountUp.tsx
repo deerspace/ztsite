@@ -16,6 +16,10 @@ export default function CountUp({ target }: { target: number }) {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           observer.unobserve(entry.target);
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            el.textContent = String(target);
+            continue;
+          }
           const duration = 1400;
           const start = performance.now();
           const tick = (now: number) => {

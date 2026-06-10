@@ -56,10 +56,23 @@ export default function Nav() {
   const [open, setOpen] = useState<"guns" | "shop" | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [bump, setBump] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevCount = useRef(0);
   const pathname = usePathname();
   const { cart, ready, openMiniCart } = useCart();
   const count = cart?.items_count ?? 0;
+
+  // Bump the cart badge whenever the item count grows.
+  useEffect(() => {
+    if (count > prevCount.current) {
+      setBump(true);
+      const t = setTimeout(() => setBump(false), 420);
+      prevCount.current = count;
+      return () => clearTimeout(t);
+    }
+    prevCount.current = count;
+  }, [count]);
 
   // Hover intent — a small grace period stops the panel flickering closed
   // when the pointer crosses the gap between trigger and panel.
@@ -135,7 +148,7 @@ export default function Nav() {
               <path d="M3 5h10l-1 9H4z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
               <path d="M5.5 5a2.5 2.5 0 0 1 5 0" fill="none" stroke="currentColor" strokeWidth="1.4" />
             </svg>
-            {ready && count > 0 && <span className="nav-badge">{count}</span>}
+            {ready && count > 0 && <span className={`nav-badge${bump ? " bump" : ""}`}>{count}</span>}
           </button>
           <button className="nav-burger" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((v) => !v)}>
             <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
