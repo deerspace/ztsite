@@ -134,7 +134,6 @@ export default function Nav() {
           >
             <button onClick={() => setOpen(open === "shop" ? null : "shop")} aria-expanded={open === "shop"} aria-haspopup="true">Shop</button>
           </li>
-          <li className="nav-item" onMouseEnter={scheduleClose}><Link href="/guns/fdp">Experience</Link></li>
           <li className="nav-item" onMouseEnter={scheduleClose}><Link href="/#support">Support</Link></li>
         </ul>
 
