@@ -45,9 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.variable} data-scroll-behavior="smooth">
       <body>
         <CartProvider>
+          <a href="#main" className="skip-link">Skip to content</a>
           <Ribbon />
           <Nav />
-          <main>{children}</main>
+          <main id="main">{children}</main>
           <Footer />
           <MiniCart />
         </CartProvider>

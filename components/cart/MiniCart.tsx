@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import CartLineItem from "./CartLineItem";
 import CheckoutButton from "./CheckoutButton";
 import { useCart } from "./CartProvider";
@@ -14,11 +14,27 @@ export default function MiniCart() {
   const { cart, miniCartOpen, closeMiniCart } = useCart();
   const items = cart?.items ?? [];
 
+  const closeBtn = useRef<HTMLButtonElement>(null);
+  const lastFocused = useRef<HTMLElement | null>(null);
+
   // Lock background scroll while the drawer is open.
   useEffect(() => {
     document.body.style.overflow = miniCartOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [miniCartOpen]);
+
+  // Focus management: move focus into the drawer on open, restore it on close,
+  // and close on Escape.
+  useEffect(() => {
+    if (miniCartOpen) {
+      lastFocused.current = document.activeElement as HTMLElement;
+      closeBtn.current?.focus();
+      const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMiniCart(); };
+      window.addEventListener("keydown", onKey);
+      return () => window.removeEventListener("keydown", onKey);
+    }
+    lastFocused.current?.focus?.();
+  }, [miniCartOpen, closeMiniCart]);
 
   const minor = cart?.totals.currency_minor_unit ?? 2;
   const symbol = cart?.totals.currency_symbol ?? "$";
@@ -32,7 +48,7 @@ export default function MiniCart() {
       <aside className="minicart" role="dialog" aria-label="Shopping cart">
         <div className="minicart-head">
           <h3>Your bag</h3>
-          <button className="minicart-close" aria-label="Close cart" onClick={closeMiniCart}>
+          <button ref={closeBtn} className="minicart-close" aria-label="Close cart" onClick={closeMiniCart}>
             ×
           </button>
         </div>
