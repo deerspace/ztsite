@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import CartLineItem from "./CartLineItem";
 import CheckoutButton from "./CheckoutButton";
 import { useCart } from "./CartProvider";
@@ -10,6 +11,12 @@ import { formatPrice } from "@/lib/money";
 export default function MiniCart() {
   const { cart, miniCartOpen, closeMiniCart } = useCart();
   const items = cart?.items ?? [];
+
+  // Lock background scroll while the drawer is open.
+  useEffect(() => {
+    document.body.style.overflow = miniCartOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [miniCartOpen]);
 
   return (
     <div className={`minicart-root${miniCartOpen ? " open" : ""}`} aria-hidden={!miniCartOpen}>

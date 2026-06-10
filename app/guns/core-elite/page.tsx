@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
+import ShowcaseNav from "@/components/showcase/ShowcaseNav";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function CoreEliteShowcase() {
   return (
     <div className="show">
+      <ShowcaseNav name="Core Elite" buyHref="/buy/core-elite-rifle" anchors={[{ label: "Calibers", href: "#caliber" }]} />
       <section className="show-hero" style={{ minHeight: "64vh" }}>
         <Reveal>
           <p className="eyebrow">Core Elite</p>
@@ -61,7 +63,7 @@ export default function CoreEliteShowcase() {
       </section>
 
       {/* Caliber feature — dark split */}
-      <section className="show-feature split">
+      <section className="show-feature split" id="caliber">
         <Reveal className="show-stage charcoal">
           <Image src="/products/pistol-core-elite-300.jpg" alt="Core Elite Pistol in 300 Blackout" width={1000} height={1000} />
         </Reveal>

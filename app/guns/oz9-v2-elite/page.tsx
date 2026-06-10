@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
+import ShowcaseNav from "@/components/showcase/ShowcaseNav";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default function EliteShowcase() {
   return (
     <div className="show">
+      <ShowcaseNav name="OZ9 V2 Elite" buyHref="/buy/oz9-v2-elite" anchors={[{ label: "Modularity", href: "#modular" }]} />
       {/* Hero — product on a bright stage against black */}
       <section className="show-hero">
         <Reveal>

@@ -50,6 +50,13 @@ ul { list-style: none; }
 img { display: block; max-width: 100%; }
 ::selection { background: rgba(224, 49, 46, 0.18); }
 
+/* Accessible focus — only on keyboard, with a brand-tinted ring */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.nav :focus-visible, .section--dark :focus-visible, .show :focus-visible, .home-hero :focus-visible { outline-color: #fff; }
+
+/* Balanced headline wrapping (no orphan words) */
+h1, h2, .display, .headline, .title { text-wrap: balance; }
+
 /* ===== Type scale ===== */
 h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .display { font-size: clamp(44px, 7vw, 88px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
@@ -143,10 +150,13 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(10, 10, 11, 0.8);
+  background: rgba(10, 10, 11, 0.72);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
+.nav.scrolled { background: rgba(10, 10, 11, 0.92); border-bottom-color: rgba(255, 255, 255, 0.08); }
 .nav-inner {
   max-width: var(--maxw-wide);
   height: var(--nav-h);
@@ -176,6 +186,8 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .nav-item > button:hover,
 .nav-item > a:hover,
 .nav-item.open > button { color: #fff; }
+.nav-item.active > button,
+.nav-item.active > a { color: #fff; }
 .nav-actions { display: flex; gap: 18px; align-items: center; }
 .nav-icon { background: none; border: none; color: rgba(245,245,247,0.82); cursor: pointer; display: flex; padding: 4px; position: relative; }
 .nav-icon:hover { color: #fff; }
@@ -234,6 +246,41 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .mnav-sec { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 16px 0; }
 .mnav-sec h4 { color: #fff; font-size: 22px; margin-bottom: 12px; }
 .mnav-sec a { display: block; color: var(--on-dark-2); font-size: 16px; padding: 8px 0; }
+
+/* Local product sub-nav (showcase pages) — Apple-style sticky bar */
+.subnav {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 900;
+  background: rgba(22, 22, 23, 0.78);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.subnav.shown { opacity: 1; transform: none; pointer-events: auto; }
+.subnav-inner {
+  max-width: var(--maxw-wide);
+  margin: 0 auto;
+  height: 52px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.subnav-name { font-size: 19px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
+.subnav-right { display: flex; align-items: center; gap: 24px; }
+.subnav-anchors { display: flex; gap: 22px; }
+.subnav-anchors a { font-size: 13px; color: var(--on-dark-2); transition: color 0.2s; }
+.subnav-anchors a:hover { color: #fff; }
+@media (max-width: 640px) { .subnav-anchors { display: none; } }
+
+/* Configurator main image cross-fade */
+@keyframes stageFade { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: none; } }
+.stage-fade { animation: stageFade 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
 
 /* ===================================================================
    Home

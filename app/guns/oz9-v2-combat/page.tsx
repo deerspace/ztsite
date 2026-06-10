@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
+import ShowcaseNav from "@/components/showcase/ShowcaseNav";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function CombatShowcase() {
   return (
     <div className="show">
+      <ShowcaseNav name="OZ9 V2 Combat" buyHref="/buy/oz9-v2-combat" anchors={[{ label: "Sealed slide", href: "#duty" }]} />
       <section className="show-hero">
         <Reveal>
           <p className="eyebrow">OZ9 V2 Combat</p>

@@ -57,6 +57,8 @@ export default function Configurator({
       <div className="buy-media">
         <div className="buy-stage">
           <Image
+            key={active}
+            className="stage-fade"
             src={images[active]?.src ?? images[0].src}
             alt={images[active]?.alt ?? name}
             width={680}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
+import ShowcaseNav from "@/components/showcase/ShowcaseNav";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function FdpShowcase() {
   return (
     <div className="show">
+      <ShowcaseNav name="FDP" buyHref="/buy/fdp" anchors={[{ label: "How it folds", href: "#fold" }]} />
       {/* Hero — type-forward, dark */}
       <section className="show-hero" style={{ minHeight: "70vh" }}>
         <Reveal>

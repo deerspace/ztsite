@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import ZevLogo from "@/components/art/ZevLogo";
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -54,10 +55,30 @@ const SHOP_COLS: { title: string; links: { label: string; href: string }[] }[] =
 export default function Nav() {
   const [open, setOpen] = useState<"guns" | "shop" | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pathname = usePathname();
   const { cart, ready, openMiniCart } = useCart();
   const count = cart?.items_count ?? 0;
 
-  // Close menus on Escape
+  // Hover intent — a small grace period stops the panel flickering closed
+  // when the pointer crosses the gap between trigger and panel.
+  const openMenu = (which: "guns" | "shop") => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(which);
+  };
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpen(null), 160);
+  };
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") { setOpen(null); setMobileOpen(false); }
@@ -66,22 +87,40 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Lock body scroll while the full-screen mobile menu is open.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  // Close menus on navigation.
+  useEffect(() => { setOpen(null); setMobileOpen(false); }, [pathname]);
+
+  const inGuns = pathname.startsWith("/guns");
+  const inShop = pathname.startsWith("/shop") || pathname.startsWith("/category") || pathname.startsWith("/buy") || pathname.startsWith("/product");
+
   return (
-    <header className="nav">
+    <header className={`nav${scrolled ? " scrolled" : ""}`}>
       <nav className="nav-inner" aria-label="Global">
-        <Link className="nav-logo" href="/" aria-label="ZEV Technologies home" onClick={() => setOpen(null)}>
+        <Link className="nav-logo" href="/" aria-label="ZEV Technologies home">
           <ZevLogo />
         </Link>
 
-        <ul className="nav-links" onMouseLeave={() => setOpen(null)}>
-          <li className={`nav-item${open === "guns" ? " open" : ""}`} onMouseEnter={() => setOpen("guns")}>
-            <button onClick={() => setOpen(open === "guns" ? null : "guns")}>Guns</button>
+        <ul className="nav-links" onMouseLeave={scheduleClose}>
+          <li
+            className={`nav-item${open === "guns" ? " open" : ""}${inGuns ? " active" : ""}`}
+            onMouseEnter={() => openMenu("guns")}
+          >
+            <button onClick={() => setOpen(open === "guns" ? null : "guns")} aria-expanded={open === "guns"} aria-haspopup="true">Guns</button>
           </li>
-          <li className={`nav-item${open === "shop" ? " open" : ""}`} onMouseEnter={() => setOpen("shop")}>
-            <button onClick={() => setOpen(open === "shop" ? null : "shop")}>Shop</button>
+          <li
+            className={`nav-item${open === "shop" ? " open" : ""}${inShop ? " active" : ""}`}
+            onMouseEnter={() => openMenu("shop")}
+          >
+            <button onClick={() => setOpen(open === "shop" ? null : "shop")} aria-expanded={open === "shop"} aria-haspopup="true">Shop</button>
           </li>
-          <li className="nav-item" onMouseEnter={() => setOpen(null)}><Link href="/guns/fdp">Experience</Link></li>
-          <li className="nav-item" onMouseEnter={() => setOpen(null)}><Link href="/#support">Support</Link></li>
+          <li className="nav-item" onMouseEnter={scheduleClose}><Link href="/guns/fdp">Experience</Link></li>
+          <li className="nav-item" onMouseEnter={scheduleClose}><Link href="/#support">Support</Link></li>
         </ul>
 
         <div className="nav-actions">
@@ -91,14 +130,14 @@ export default function Nav() {
               <line x1="10.5" y1="10.5" x2="15" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </Link>
-          <button className="nav-icon" aria-label="Open cart" onClick={openMiniCart}>
+          <button className="nav-icon" aria-label={`Open cart, ${count} item${count === 1 ? "" : "s"}`} onClick={openMiniCart}>
             <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
               <path d="M3 5h10l-1 9H4z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
               <path d="M5.5 5a2.5 2.5 0 0 1 5 0" fill="none" stroke="currentColor" strokeWidth="1.4" />
             </svg>
             {ready && count > 0 && <span className="nav-badge">{count}</span>}
           </button>
-          <button className="nav-burger" aria-label="Menu" onClick={() => setMobileOpen((v) => !v)}>
+          <button className="nav-burger" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((v) => !v)}>
             <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
               <line x1="2" y1="6" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5" />
               <line x1="2" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" />
@@ -112,14 +151,14 @@ export default function Nav() {
 
       <div
         className={`mega${open === "guns" ? " open" : ""}`}
-        onMouseEnter={() => setOpen("guns")}
-        onMouseLeave={() => setOpen(null)}
+        onMouseEnter={() => openMenu("guns")}
+        onMouseLeave={scheduleClose}
       >
         <div className="mega-inner">
           <p className="mega-col-title">Explore the lineup</p>
           <div className="mega-grid">
             {GUNS.map((g) => (
-              <Link key={g.name} href={g.href} className="mega-card" onClick={() => setOpen(null)}>
+              <Link key={g.name} href={g.href} className="mega-card">
                 <div className="mega-thumb">
                   <Image src={g.img} alt={g.name} width={220} height={165} />
                 </div>
@@ -133,8 +172,8 @@ export default function Nav() {
 
       <div
         className={`mega${open === "shop" ? " open" : ""}`}
-        onMouseEnter={() => setOpen("shop")}
-        onMouseLeave={() => setOpen(null)}
+        onMouseEnter={() => openMenu("shop")}
+        onMouseLeave={scheduleClose}
       >
         <div className="mega-inner">
           <div className="mega-grid">
@@ -143,14 +182,14 @@ export default function Nav() {
                 <p className="mega-col-title">{col.title}</p>
                 <div className="mega-links">
                   {col.links.map((l) => (
-                    <Link key={l.label} href={l.href} onClick={() => setOpen(null)}>{l.label}</Link>
+                    <Link key={l.label} href={l.href}>{l.label}</Link>
                   ))}
                 </div>
               </div>
             ))}
             <div>
               <p className="mega-col-title">Featured</p>
-              <Link href="/buy/oz9-v2-hypercomp" className="mega-card" onClick={() => setOpen(null)}>
+              <Link href="/buy/oz9-v2-hypercomp" className="mega-card">
                 <div className="mega-thumb">
                   <Image src="/products/oz9-hypercomp-hero.jpg" alt="OZ9 V2 Hypercomp" width={220} height={165} />
                 </div>
@@ -167,14 +206,14 @@ export default function Nav() {
         <div className="mnav-sec">
           <h4>Guns</h4>
           {GUNS.map((g) => (
-            <Link key={g.name} href={g.href} onClick={() => setMobileOpen(false)}>{g.name}</Link>
+            <Link key={g.name} href={g.href}>{g.name}</Link>
           ))}
         </div>
         <div className="mnav-sec">
           <h4>Shop</h4>
-          <Link href="/shop" onClick={() => setMobileOpen(false)}>Shop all parts</Link>
+          <Link href="/shop">Shop all parts</Link>
           {SHOP_COLS[0].links.map((l) => (
-            <Link key={l.label} href={l.href} onClick={() => setMobileOpen(false)}>{l.label}</Link>
+            <Link key={l.label} href={l.href}>{l.label}</Link>
           ))}
         </div>
       </div>
