@@ -275,7 +275,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .mega-links a:hover { color: #fff; }
 
 /* Store dropdown — Apple-style text columns (large shop links + quick links) */
-.mega-store-inner { display: grid; grid-template-columns: minmax(260px, 380px) minmax(220px, 320px); gap: clamp(48px, 9vw, 130px); align-items: start; }
+.mega-store-inner { display: grid; grid-template-columns: minmax(240px, 340px) minmax(220px, 300px); gap: clamp(32px, 4vw, 64px); align-items: start; }
 .mega-store-col .mega-col-title { margin-bottom: 18px; }
 .mega-shop-links { display: flex; flex-direction: column; gap: 14px; }
 .mega-shop-links a { font-size: clamp(22px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.015em; color: #f5f5f7; transition: color 0.2s ease, opacity 0.2s ease; }
