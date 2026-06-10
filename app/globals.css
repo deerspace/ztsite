@@ -703,6 +703,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .line-info { flex: 1; min-width: 0; }
 .line-name { font-size: 14px; font-weight: 600; color: inherit; }
 .line-name:hover { text-decoration: underline; }
+.line-variation { font-size: 12px; color: var(--ink-2); margin-top: 3px; line-height: 1.35; }
 .line-meta { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
 .line-meta .qty button { width: 28px; height: 30px; font-size: 14px; }
 .line-meta .qty span { min-width: 22px; font-size: 13px; }

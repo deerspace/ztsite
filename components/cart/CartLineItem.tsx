@@ -26,6 +26,9 @@ export default function CartLineItem({ item }: { item: StoreCartItem }) {
         <Link href={`/product/${slug}`} className="line-name">
           {item.name}
         </Link>
+        {item.variation && item.variation.length > 0 && (
+          <p className="line-variation">{item.variation.map((v) => v.value).filter(Boolean).join(" · ")}</p>
+        )}
         <div className="line-meta">
           <div className="qty">
             <button

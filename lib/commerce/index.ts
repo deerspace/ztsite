@@ -5,7 +5,7 @@ import { wooCatalog } from "./woocommerce/provider";
 import { WooCartClient } from "./woocommerce/provider";
 
 export * from "./types";
-export type { CatalogProvider, CartClient, GetProductsParams } from "./provider";
+export type { CatalogProvider, CartClient, GetProductsParams, AddItemOptions } from "./provider";
 
 // Real mode iff explicitly requested, or a store URL is configured and mock
 // isn't explicitly forced. With no env vars at all, mock mode runs everywhere.

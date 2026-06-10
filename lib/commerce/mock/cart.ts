@@ -1,5 +1,5 @@
-import type { CartClient } from "../provider";
-import type { StoreCart, StoreCartItem } from "../types";
+import type { AddItemOptions, CartClient } from "../provider";
+import type { StoreCart, StoreCartItem, StoreCartVariation } from "../types";
 import { mockProducts } from "./catalog";
 
 const STORAGE_KEY = "zt_cart_v1";
@@ -7,6 +7,16 @@ const STORAGE_KEY = "zt_cart_v1";
 interface StoredLine {
   id: number;
   quantity: number;
+  variation?: StoreCartVariation[];
+  unitPrice?: number; // cents
+}
+
+// Stable, collision-free key per (product, configuration). Two adds of the
+// same product with the same options merge; different options stay separate.
+function lineKey(line: StoredLine): string {
+  if (!line.variation || line.variation.length === 0) return `mock-${line.id}`;
+  const sig = line.variation.map((v) => v.value).join("_").replace(/[^a-z0-9]+/gi, "-");
+  return `mock-${line.id}-${sig.toLowerCase()}`;
 }
 
 function readLines(): StoredLine[] {
@@ -35,13 +45,10 @@ function toCart(lines: StoredLine[]): StoreCart {
   for (const line of lines) {
     const product = mockProducts.find((p) => p.id === line.id);
     if (!product) continue;
-    // Variable products price from the range minimum in mock mode.
-    const unit = Number(
-      product.prices.price_range?.min_amount ?? product.prices.price,
-    );
+    const unit = line.unitPrice ?? Number(product.prices.price_range?.min_amount ?? product.prices.price);
     const lineTotal = String(unit * line.quantity);
     items.push({
-      key: `mock-${product.id}`,
+      key: lineKey(line),
       id: product.id,
       quantity: line.quantity,
       name: product.name,
@@ -49,6 +56,7 @@ function toCart(lines: StoredLine[]): StoreCart {
       sku: product.sku,
       images: product.images,
       prices: product.prices,
+      variation: line.variation,
       totals: {
         line_subtotal: lineTotal,
         line_total: lineTotal,
@@ -77,22 +85,23 @@ export class MockCartClient implements CartClient {
     return toCart(readLines());
   }
 
-  async addItem(productId: number, quantity: number): Promise<StoreCart> {
+  async addItem(productId: number, quantity: number, opts?: AddItemOptions): Promise<StoreCart> {
     const lines = readLines();
-    const existing = lines.find((l) => l.id === productId);
+    const candidate: StoredLine = { id: productId, quantity, variation: opts?.variation, unitPrice: opts?.unitPrice };
+    const key = lineKey(candidate);
+    const existing = lines.find((l) => lineKey(l) === key);
     if (existing) existing.quantity += quantity;
-    else lines.push({ id: productId, quantity });
+    else lines.push(candidate);
     writeLines(lines);
     return toCart(lines);
   }
 
   async updateItem(key: string, quantity: number): Promise<StoreCart> {
-    const id = Number(key.replace("mock-", ""));
     let lines = readLines();
     if (quantity <= 0) {
-      lines = lines.filter((l) => l.id !== id);
+      lines = lines.filter((l) => lineKey(l) !== key);
     } else {
-      const line = lines.find((l) => l.id === id);
+      const line = lines.find((l) => lineKey(l) === key);
       if (line) line.quantity = quantity;
     }
     writeLines(lines);
@@ -100,8 +109,7 @@ export class MockCartClient implements CartClient {
   }
 
   async removeItem(key: string): Promise<StoreCart> {
-    const id = Number(key.replace("mock-", ""));
-    const lines = readLines().filter((l) => l.id !== id);
+    const lines = readLines().filter((l) => lineKey(l) !== key);
     writeLines(lines);
     return toCart(lines);
   }

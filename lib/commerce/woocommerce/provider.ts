@@ -1,4 +1,4 @@
-import type { CatalogProvider, CartClient, GetProductsParams } from "../provider";
+import type { AddItemOptions, CatalogProvider, CartClient, GetProductsParams } from "../provider";
 import type { StoreCart, StoreCategory, StoreProduct } from "../types";
 import { cartApiFetch, storeApiFetch } from "./client";
 
@@ -48,10 +48,12 @@ export class WooCartClient implements CartClient {
     return cartApiFetch<StoreCart>("/cart");
   }
 
-  addItem(productId: number, quantity: number): Promise<StoreCart> {
+  // opts.variation maps to the Store API `variation` body; a real store would
+  // resolve the configured attributes to the matching variation_id.
+  addItem(productId: number, quantity: number, opts?: AddItemOptions): Promise<StoreCart> {
     return cartApiFetch<StoreCart>("/cart/add-item", {
       method: "POST",
-      body: JSON.stringify({ id: productId, quantity }),
+      body: JSON.stringify({ id: productId, quantity, variation: opts?.variation }),
     });
   }
 

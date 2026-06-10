@@ -47,7 +47,11 @@ export default function Configurator({
   }, [base, gun.configurator, selected]);
 
   const add = async () => {
-    await addItem(productId, 1);
+    const variation = gun.configurator.map((g) => ({
+      attribute: g.label,
+      value: g.values.find((v) => v.id === selected[g.key])?.label ?? "",
+    }));
+    await addItem(productId, 1, { variation, unitPrice: total });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };

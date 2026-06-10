@@ -71,6 +71,12 @@ export interface StoreCartItemTotals {
   currency_minor_unit: number;
 }
 
+// Store API exposes selected attributes on a cart item as `variation`.
+export interface StoreCartVariation {
+  attribute: string;
+  value: string;
+}
+
 export interface StoreCartItem {
   key: string;
   id: number;
@@ -81,6 +87,7 @@ export interface StoreCartItem {
   images: StoreImage[];
   prices: StorePrices;
   totals: StoreCartItemTotals;
+  variation?: StoreCartVariation[];
 }
 
 export interface StoreCartTotals {

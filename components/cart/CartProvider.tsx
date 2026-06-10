@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { createCartClient, type StoreCart } from "@/lib/commerce";
+import { createCartClient, type AddItemOptions, type StoreCart } from "@/lib/commerce";
 
 interface CartContextValue {
   // null until the first load completes (avoids SSR/localStorage mismatch)
@@ -20,7 +20,7 @@ interface CartContextValue {
   miniCartOpen: boolean;
   openMiniCart: () => void;
   closeMiniCart: () => void;
-  addItem: (productId: number, quantity: number) => Promise<void>;
+  addItem: (productId: number, quantity: number, opts?: AddItemOptions) => Promise<void>;
   updateItem: (key: string, quantity: number) => Promise<void>;
   removeItem: (key: string) => Promise<void>;
 }
@@ -75,8 +75,8 @@ export default function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addItem = useCallback(
-    async (productId: number, quantity: number) => {
-      await run(() => client().addItem(productId, quantity));
+    async (productId: number, quantity: number, opts?: AddItemOptions) => {
+      await run(() => client().addItem(productId, quantity, opts));
       setMiniCartOpen(true);
     },
     [run],

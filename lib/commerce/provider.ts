@@ -1,4 +1,11 @@
-import type { StoreCart, StoreCategory, StoreProduct } from "./types";
+import type { StoreCart, StoreCartVariation, StoreCategory, StoreProduct } from "./types";
+
+// Extra context for a configured add-to-cart (firearm builds). Mock mode
+// stores these on the line; real WooCommerce maps them to a variation_id.
+export interface AddItemOptions {
+  variation?: StoreCartVariation[];
+  unitPrice?: number; // cents — overrides base price for configured builds
+}
 
 export interface GetProductsParams {
   categorySlug?: string;
@@ -18,7 +25,7 @@ export interface CatalogProvider {
 // Browser-side cart operations. Only called from CartProvider (client).
 export interface CartClient {
   getCart(): Promise<StoreCart>;
-  addItem(productId: number, quantity: number): Promise<StoreCart>;
+  addItem(productId: number, quantity: number, opts?: AddItemOptions): Promise<StoreCart>;
   updateItem(key: string, quantity: number): Promise<StoreCart>;
   removeItem(key: string): Promise<StoreCart>;
 }
