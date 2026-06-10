@@ -447,7 +447,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .home-hero.on-light :focus-visible { outline-color: var(--ink); }
 
 /* Showcase tiles grid (gun families) */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; max-width: var(--maxw-bento); margin-inline: auto; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px; max-width: var(--maxw-bento); margin-inline: auto; }
 .tile {
   position: relative;
   border-radius: var(--radius);
