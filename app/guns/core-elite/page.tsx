@@ -15,16 +15,19 @@ export default function CoreEliteShowcase() {
   return (
     <div className="show">
       <ShowcaseNav name="Core Elite" buyHref="/buy/core-elite-rifle" anchors={[{ label: "Calibers", href: "#caliber" }]} />
-      <section className="show-hero" style={{ minHeight: "64vh" }}>
+      <section className="show-hero" style={{ minHeight: 0, paddingBottom: "clamp(56px,8vh,104px)" }}>
         <Reveal>
           <p className="eyebrow">Core Elite</p>
           <h1>Billet, to the bone.</h1>
           <p className="tagline">The AR, machined like a ZEV.</p>
           <p className="price-line">Pistols from $1,864 · Rifles from $2,284</p>
         </Reveal>
-        <Reveal className="show-hero-stage">
-          <div className="show-stage soft" style={{ maxWidth: 1000, margin: "0 auto" }}>
-            <Image src="/products/rifle-core-elite.jpg" alt="ZEV Core Elite Rifle, .223 Wylde, 16 inch" width={1000} height={1000} priority />
+        <Reveal className="show-hero-stage" style={{ marginTop: "clamp(40px,6vh,72px)" }}>
+          {/* The rifle is a long, low subject floating in a square frame with
+              ~40% empty space top and bottom. Crop to a wide band so it fills
+              the stage and the dead space below it disappears. */}
+          <div className="show-stage soft" style={{ maxWidth: 1000, margin: "0 auto", aspectRatio: "5 / 2", overflow: "hidden" }}>
+            <Image src="/products/rifle-core-elite.jpg" alt="ZEV Core Elite Rifle, .223 Wylde, 16 inch" width={1000} height={1000} priority style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
         </Reveal>
       </section>
