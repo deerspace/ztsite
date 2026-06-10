@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Configurator from "@/components/product/Configurator";
+import TrustRow from "@/components/product/TrustRow";
 import { catalog } from "@/lib/commerce";
 import { getGun, GUN_SLUGS } from "@/lib/content/guns";
 
@@ -48,6 +49,9 @@ export default async function BuyPage({ params }: Props) {
         images={product.images}
         gun={gun}
       />
+      <section className="wrap-wide" style={{ paddingBottom: "clamp(70px,10vw,110px)" }}>
+        <TrustRow />
+      </section>
     </>
   );
 }

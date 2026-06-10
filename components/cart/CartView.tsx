@@ -3,6 +3,7 @@
 import Link from "next/link";
 import CartLineItem from "./CartLineItem";
 import CheckoutButton from "./CheckoutButton";
+import TrustRow from "@/components/product/TrustRow";
 import { useCart } from "./CartProvider";
 import { formatPrice } from "@/lib/money";
 
@@ -62,6 +63,7 @@ export default function CartView() {
           <CheckoutButton />
         </div>
       </div>
+      <TrustRow />
     </div>
   );
 }
