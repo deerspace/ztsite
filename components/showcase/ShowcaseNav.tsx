@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { NavTheme } from "@/components/layout/NavThemeContext";
 
 interface Anchor {
   label: string;
@@ -30,7 +31,10 @@ export default function ShowcaseNav({
   }, []);
 
   return (
-    <div className={`subnav${shown ? " shown" : ""}`} aria-hidden={!shown}>
+    <>
+      {/* Showcase pages have a dark hero at the top → dark nav chrome. */}
+      <NavTheme value="dark" />
+      <div className={`subnav${shown ? " shown" : ""}`} aria-hidden={!shown}>
       <div className="subnav-inner">
         <span className="subnav-name">{name}</span>
         <div className="subnav-right">
@@ -42,6 +46,7 @@ export default function ShowcaseNav({
           <Link className="btn btn-primary btn-sm" href={buyHref}>Buy</Link>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

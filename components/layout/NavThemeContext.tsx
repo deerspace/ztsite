@@ -1,25 +1,35 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState } from "react";
 
-type NavTheme = "dark" | "light";
+type Mode = "dark" | "light";
 
 interface NavThemeValue {
-  theme: NavTheme;
-  // null clears any hero override → the chrome falls back to the dark default.
-  setHeroTheme: (t: NavTheme | null) => void;
+  theme: Mode;
+  // Override the nav chrome for the current page; null clears it → light default.
+  setNavTheme: (t: Mode | null) => void;
 }
 
+// useLayoutEffect on the client, useEffect on the server (avoids the SSR warning).
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 const NavThemeCtx = createContext<NavThemeValue>({
-  theme: "dark",
-  setHeroTheme: () => {},
+  theme: "light",
+  setNavTheme: () => {},
 });
 
+// The nav-chrome standard for the site:
+//   • Light is the default — the site is white-first, so most pages' top region
+//     is light and need declare nothing.
+//   • A page whose top region is dark declares it with <NavTheme value="dark" />
+//     (showcase pages get this automatically via ShowcaseNav).
+//   • A page with a photographic hero detects it from the image with
+//     useDetectHeroTheme(src): a dark photo → dark chrome, a light photo → light.
 export function NavThemeProvider({ children }: { children: React.ReactNode }) {
-  const [heroTheme, setHero] = useState<NavTheme | null>(null);
-  const setHeroTheme = useCallback((t: NavTheme | null) => setHero(t), []);
+  const [override, setOverride] = useState<Mode | null>(null);
+  const setNavTheme = useCallback((t: Mode | null) => setOverride(t), []);
   return (
-    <NavThemeCtx.Provider value={{ theme: heroTheme ?? "dark", setHeroTheme }}>
+    <NavThemeCtx.Provider value={{ theme: override ?? "light", setNavTheme }}>
       {children}
     </NavThemeCtx.Provider>
   );
@@ -27,12 +37,23 @@ export function NavThemeProvider({ children }: { children: React.ReactNode }) {
 
 export const useNavTheme = () => useContext(NavThemeCtx);
 
-// Sample the top band of a hero image (the region that sits behind the nav and
-// the headline) and report whether the chrome should run light or dark. A light
-// photo → white nav + dark copy; a dark photo → the default dark chrome.
-// Clears the override on unmount so other routes get the dark default back.
+// Declarative marker: drop <NavTheme value="dark" /> at the top of any page whose
+// top region is dark. Sets the chrome on mount (before paint, so the page never
+// flashes the light default) and clears it on unmount.
+export function NavTheme({ value }: { value: Mode }) {
+  const { setNavTheme } = useNavTheme();
+  useIsoLayoutEffect(() => {
+    setNavTheme(value);
+    return () => setNavTheme(null);
+  }, [value, setNavTheme]);
+  return null;
+}
+
+// Sample the top band of a hero image (the region behind the nav + headline) and
+// set the chrome from its brightness: a light photo → light nav + dark copy, a
+// dark photo → dark nav. Clears the override on unmount → light default.
 export function useDetectHeroTheme(src: string, threshold = 140) {
-  const { setHeroTheme } = useNavTheme();
+  const { setNavTheme } = useNavTheme();
   useEffect(() => {
     let cancelled = false;
     const img = new Image();
@@ -57,7 +78,7 @@ export function useDetectHeroTheme(src: string, threshold = 140) {
           sum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
         }
         const lum = sum / (data.length / 4);
-        if (!cancelled) setHeroTheme(lum > threshold ? "light" : "dark");
+        if (!cancelled) setNavTheme(lum > threshold ? "light" : "dark");
       } catch {
         // Tainted/blocked canvas — keep whatever the default chrome is.
       }
@@ -70,7 +91,7 @@ export function useDetectHeroTheme(src: string, threshold = 140) {
     return () => {
       cancelled = true;
       img.removeEventListener("load", run);
-      setHeroTheme(null);
+      setNavTheme(null);
     };
-  }, [src, threshold, setHeroTheme]);
+  }, [src, threshold, setNavTheme]);
 }
