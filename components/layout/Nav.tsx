@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ZevLogo from "@/components/art/ZevLogo";
+import SearchOverlay from "@/components/search/SearchOverlay";
 import { useCart } from "@/components/cart/CartProvider";
 
 interface GunCard {
@@ -55,6 +56,7 @@ const SHOP_COLS: { title: string; links: { label: string; href: string }[] }[] =
 export default function Nav() {
   const [open, setOpen] = useState<"guns" | "shop" | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [bump, setBump] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -137,12 +139,12 @@ export default function Nav() {
         </ul>
 
         <div className="nav-actions">
-          <Link className="nav-icon" href="/shop" aria-label="Search the store">
+          <button className="nav-icon" aria-label="Search the store" onClick={() => setSearchOpen(true)}>
             <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
               <circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" strokeWidth="1.6" />
               <line x1="10.5" y1="10.5" x2="15" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
-          </Link>
+          </button>
           <button className="nav-icon" aria-label={`Open cart, ${count} item${count === 1 ? "" : "s"}`} onClick={openMiniCart}>
             <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
               <path d="M3 5h10l-1 9H4z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
@@ -213,6 +215,8 @@ export default function Nav() {
           </div>
         </div>
       </div>
+
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile menu */}
       <div className={`mnav${mobileOpen ? " open" : ""}`}>
