@@ -9,7 +9,7 @@ export default function HomeHero() {
     <section className="home-hero on-dark">
       <div className="home-hero-bg">
         <Parallax amount={50} className="home-hero-parallax">
-          <Image src="/products/home-hero.jpg" alt="" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+          <Image src="/products/home-hero-oz9.jpg" alt="" fill priority sizes="100vw" style={{ objectFit: "cover", objectPosition: "center 60%" }} />
         </Parallax>
       </div>
       <div className="home-hero-copy">
