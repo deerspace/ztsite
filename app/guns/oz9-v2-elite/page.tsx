@@ -54,8 +54,8 @@ export default function EliteShowcase() {
               { img: "oz9-elite-right.jpg", t: "Compact", d: "Carry, concealed." },
               { img: "oz9-elite-hero.jpg", t: "Full", d: "Duty, all day." },
               { img: "oz9-elite-left.jpg", t: "Long", d: "Competition, flat." },
-            ].map((b) => (
-              <Reveal key={b.t} className="gallery-cell" style={{ flexDirection: "column", padding: 18 }}>
+            ].map((b, i) => (
+              <Reveal key={b.t} className="gallery-cell" style={{ flexDirection: "column", padding: 18 }} delay={i * 110}>
                 <Image src={`/products/${b.img}`} alt={`OZ9 Elite ${b.t} slide`} width={420} height={360} />
                 <div style={{ textAlign: "center", marginTop: 8 }}>
                   <div style={{ fontWeight: 600, color: "var(--ink)" }}>{b.t}</div>

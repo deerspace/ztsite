@@ -66,8 +66,8 @@ const TILES: Tile[] = [
 export default function GunTiles() {
   return (
     <section className="tiles">
-      {TILES.map((t) => (
-        <Reveal key={t.name} className={`tile ${t.theme}${t.wide ? " wide" : ""}`}>
+      {TILES.map((t, i) => (
+        <Reveal key={t.name} className={`tile ${t.theme}${t.wide ? " wide" : ""}`} delay={(i % 2) * 90}>
           <p className="tile-eyebrow">{t.eyebrow}</p>
           <h3>{t.name}</h3>
           <p className="tile-sub">{t.sub}</p>

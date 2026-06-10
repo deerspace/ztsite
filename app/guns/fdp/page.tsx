@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
+import Parallax from "@/components/ux/Parallax";
 import ShowcaseNav from "@/components/showcase/ShowcaseNav";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
@@ -30,8 +31,10 @@ export default function FdpShowcase() {
       </section>
 
       {/* Full-bleed lifestyle */}
-      <div className="show-bleed">
-        <Image src="/products/fdp-bg.jpg" alt="Drawing the folded FDP from a sling bag" width={2400} height={1200} sizes="100vw" priority />
+      <div className="show-bleed parallax-frame">
+        <Parallax amount={44}>
+          <Image src="/products/fdp-bg.jpg" alt="Drawing the folded FDP from a sling bag" width={2400} height={1200} sizes="100vw" priority />
+        </Parallax>
         <div className="show-bleed-copy">
           <Reveal>
             <h2 className="title">Carry it folded.</h2>
