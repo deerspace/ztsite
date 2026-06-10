@@ -113,6 +113,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .btn-ghost:hover { background: var(--ink); color: #fff; box-shadow: none; }
 .btn-lg { font-size: 17px; padding: 14px 30px; }
 .btn-sm { font-size: 13px; padding: 8px 16px; }
+.btn:active { transform: scale(0.97); }
 .btn[disabled] { opacity: 0.45; pointer-events: none; }
 
 .link-arrow {
@@ -504,13 +505,17 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   display: flex;
   flex-direction: column;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
 }
-.card:hover { transform: translateY(-4px); }
+.card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px -18px rgba(0,0,0,0.25); }
 .card-tag { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); }
 .card-tag.new { color: var(--accent); }
-.card-art { margin: 14px auto; width: 100%; max-width: 280px; }
+.card-art { margin: 14px auto; width: 100%; max-width: 280px; position: relative; }
 .card-art img, .card-art svg { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+/* Hover image-swap: alternate angle crossfades in on card hover */
+.card-art.swap .card-art-alt { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; }
+.card:hover .card-art.swap .card-art-alt { opacity: 1; }
+.card:hover .card-art.swap > img:first-of-type { opacity: 0; transition: opacity 0.4s ease; }
 .card h3 { font-size: 20px; }
 .card-name:hover { text-decoration: underline; }
 .card-desc { font-size: 14px; line-height: 1.5; color: var(--ink-2); margin-top: 6px; flex: 1; }
@@ -522,9 +527,11 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .lineup-head { max-width: var(--maxw-wide); margin: 0 auto 32px; padding: 0 24px; display: flex; align-items: baseline; justify-content: space-between; }
 .lineup-head h2 { font-size: clamp(30px,4vw,48px); }
 .lineup-nav { display: flex; gap: 10px; }
-.car-btn { width: 38px; height: 38px; border-radius: 50%; border: none; background: #e8e8ed; color: var(--ink); font-size: 19px; cursor: pointer; transition: background 0.2s; }
+.car-btn { width: 38px; height: 38px; border-radius: 50%; border: none; background: #e8e8ed; color: var(--ink); font-size: 19px; cursor: pointer; transition: background 0.2s, opacity 0.2s; }
 .car-btn:hover { background: #dcdce1; }
-.carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 24px 24px; max-width: var(--maxw-wide); margin: 0 auto; scrollbar-width: none; }
+.car-btn:disabled { opacity: 0.35; cursor: default; }
+.carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 24px 24px; max-width: var(--maxw-wide); margin: 0 auto; scrollbar-width: none; touch-action: pan-y; }
+.carousel:active { cursor: grabbing; }
 .carousel::-webkit-scrollbar { display: none; }
 .carousel .card { scroll-snap-align: start; flex: 0 0 290px; }
 

@@ -21,6 +21,7 @@ export default function ProductCard({
   const href = gun ? showcaseHref(product.slug) : `/product/${product.slug}`;
   const buyHref = gun ? `/buy/${product.slug}` : `/product/${product.slug}`;
   const image = product.images[0];
+  const hoverImage = product.images[1];
 
   return (
     <article className="card">
@@ -28,9 +29,12 @@ export default function ProductCard({
         {isNew ? "New" : (product.categories[0]?.name ?? "ZEV")}
       </p>
       {showArt && (
-        <Link href={href} className="card-art" aria-hidden="true" tabIndex={-1}>
+        <Link href={href} className={`card-art${hoverImage ? " swap" : ""}`} aria-hidden="true" tabIndex={-1}>
           {image ? (
-            <Image src={image.src} alt={product.name} width={280} height={280} />
+            <>
+              <Image src={image.src} alt={product.name} width={280} height={280} />
+              {hoverImage && <Image className="card-art-alt" src={hoverImage.src} alt="" width={280} height={280} />}
+            </>
           ) : (
             <ProductArt slug={product.slug} />
           )}
