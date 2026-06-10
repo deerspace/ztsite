@@ -536,6 +536,9 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .show-feature.split { grid-template-columns: 1fr 1fr; }
 .show-feature h2 { font-size: clamp(32px, 4.4vw, 60px); }
 .show-feature p { font-size: clamp(16px,1.5vw,19px); line-height: 1.55; color: var(--on-dark-2); margin-top: 16px; max-width: 46ch; }
+/* The kicker is a label, not body copy — don't constrain its width (which would
+   leave it left-hugging and make centered sections look off-center). */
+.show-feature .kicker { max-width: none; margin-top: 0; }
 .band-light .show-feature p, .band-soft .show-feature p { color: var(--ink-2); }
 .show-stage { border-radius: var(--radius-lg); overflow: hidden; }
 .show-stage.light { background: #fff; }
