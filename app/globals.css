@@ -516,6 +516,12 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .show-hero .cta-row { display: flex; gap: 24px; justify-content: center; margin-top: 22px; margin-bottom: clamp(40px, 6vh, 80px); }
 .show-hero-stage { margin-top: auto; width: 100%; max-width: 1080px; }
 .show-hero-stage img { width: 100%; height: auto; object-fit: contain; }
+/* Full-bleed photographic showcase hero (FDP): image behind, copy anchored low */
+.show-hero.photo { justify-content: flex-end; padding-bottom: clamp(48px, 8vh, 100px); }
+.show-hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.show-hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.show-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.5) 62%, rgba(0,0,0,0.9)); }
+.show-hero.photo .show-hero-copy { position: relative; z-index: 1; }
 
 /* full-bleed image band */
 .show-bleed { position: relative; }

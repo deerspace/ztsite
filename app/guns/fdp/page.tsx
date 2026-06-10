@@ -16,9 +16,12 @@ export default function FdpShowcase() {
   return (
     <div className="show">
       <ShowcaseNav name="FDP" buyHref="/buy/fdp" anchors={[{ label: "How it folds", href: "#fold" }]} />
-      {/* Hero — type-forward, dark */}
-      <section className="show-hero" style={{ minHeight: "70vh" }}>
-        <Reveal>
+      {/* Hero — full-bleed editorial photo, copy anchored low */}
+      <section className="show-hero photo" style={{ minHeight: "86vh" }}>
+        <div className="show-hero-bg">
+          <Image src="/products/fdp-hero.jpg" alt="The folded FDP resting on a side table" fill priority sizes="100vw" style={{ objectFit: "cover", objectPosition: "center 40%" }} />
+        </div>
+        <Reveal className="show-hero-copy">
           <p className="eyebrow">ZEV × Magpul</p>
           <h1>FDP</h1>
           <p className="tagline">It folds. Everything changes.</p>
