@@ -184,6 +184,9 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 .nav.scrolled { background: rgba(22, 22, 23, 0.92); border-bottom-color: rgba(255, 255, 255, 0.08); }
+/* When a dropdown is open the bar goes fully opaque so it and the flyout
+   read as one continuous solid block (apple.com behaviour). */
+.nav.menu-open { background: #1d1d1f; border-bottom-color: transparent; }
 .nav-inner {
   max-width: var(--maxw-wide);
   height: var(--nav-h);
@@ -238,10 +241,8 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   position: fixed;
   left: 0; right: 0;
   top: var(--nav-h);
-  background: rgba(22, 22, 23, 0.92);
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  border-top: 1px solid rgba(255,255,255,0.08);
+  /* Opaque, same colour as the open nav bar — one continuous block. */
+  background: #1d1d1f;
   z-index: 1001;
   opacity: 0;
   visibility: hidden;
@@ -279,7 +280,17 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 @media (max-width: 640px) { .mega-store-inner { grid-template-columns: 1fr; gap: 32px; } }
 /* The .nav header's backdrop-filter makes it the containing block for these
    fixed children, so full-bleed overlays need viewport-based heights. */
-.mega-overlay { position: fixed; top: var(--nav-h); left: 0; right: 0; height: 100vh; z-index: 1000; background: rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.28s, visibility 0.28s; }
+.mega-overlay {
+  position: fixed;
+  inset: var(--nav-h) 0 0;
+  z-index: 900; /* above the page, below the nav + flyout (z 1000/1001) */
+  background: rgba(0, 0, 0, 0.16);
+  backdrop-filter: saturate(180%) blur(22px);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 .mega-overlay.open { opacity: 1; visibility: visible; }
 
 /* mobile nav */

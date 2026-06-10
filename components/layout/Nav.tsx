@@ -109,7 +109,8 @@ export default function Nav() {
   const inStore = !inGuns && STORE_ROUTES.some((r) => pathname.startsWith(r));
 
   return (
-    <header className={`nav${scrolled ? " scrolled" : ""}`}>
+    <>
+    <header className={`nav${scrolled ? " scrolled" : ""}${open ? " menu-open" : ""}`}>
       <nav className="nav-inner" aria-label="Global">
         <Link className="nav-logo" href="/" aria-label="ZEV Technologies home">
           <ZevLogo />
@@ -153,9 +154,6 @@ export default function Nav() {
           </button>
         </div>
       </nav>
-
-      {/* Mega dropdowns */}
-      <div className={`mega-overlay${open ? " open" : ""}`} onClick={() => setOpen(null)} />
 
       {/* Store — Apple-style text columns */}
       <div
@@ -229,5 +227,10 @@ export default function Nav() {
         </div>
       </div>
     </header>
+
+    {/* Blur curtain — blurs the page behind an open dropdown. Outside the
+        header so its backdrop-filter isn't nested in the nav's own filter. */}
+    <div className={`mega-overlay${open ? " open" : ""}`} onClick={() => setOpen(null)} />
+    </>
   );
 }
