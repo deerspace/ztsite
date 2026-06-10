@@ -134,6 +134,19 @@ export default function Configurator({
           </p>
         </div>
       </div>
+
+      {/* Mobile-only sticky buy bar */}
+      <div className="buy-stickybar">
+        <div className="buy-stickybar-info">
+          <span className="buy-stickybar-name">{name}</span>
+          <span className="buy-stickybar-price">
+            {formatPrice(String(total), prices.currency_minor_unit, prices.currency_symbol)}
+          </span>
+        </div>
+        <button className="btn btn-primary" disabled={busy} onClick={add}>
+          {added ? "Added ✓" : "Add to Bag"}
+        </button>
+      </div>
     </div>
   );
 }

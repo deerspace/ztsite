@@ -57,6 +57,9 @@ img { display: block; max-width: 100%; }
 /* Balanced headline wrapping (no orphan words) */
 h1, h2, .display, .headline, .title { text-wrap: balance; }
 
+/* Anchor targets clear the sticky nav (+ showcase sub-nav) on jump */
+[id] { scroll-margin-top: calc(var(--nav-h) + 64px); }
+
 /* ===== Type scale ===== */
 h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .display { font-size: clamp(44px, 7vw, 88px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
@@ -484,6 +487,31 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .buy-actions { display: flex; gap: 12px; margin-top: 18px; }
 .buy-actions .btn { flex: 1; }
 .buy-note { font-size: 12px; color: var(--ink-3); margin-top: 14px; line-height: 1.5; }
+
+/* Mobile sticky buy bar — hidden on desktop */
+.buy-stickybar {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 950;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -8px 24px -12px rgba(0, 0, 0, 0.18);
+}
+.buy-stickybar .btn { padding: 12px 26px; }
+.buy-stickybar-info { display: flex; flex-direction: column; line-height: 1.2; }
+.buy-stickybar-name { font-size: 12px; color: var(--ink-2); }
+.buy-stickybar-price { font-size: 18px; font-weight: 600; }
+@media (max-width: 834px) {
+  .buy-stickybar { display: flex; }
+  .buy { padding-bottom: 100px; }
+}
 
 /* product media frame (next/image fill) + simple add-to-cart row */
 .media-frame { position: relative; width: 100%; aspect-ratio: 1; }
