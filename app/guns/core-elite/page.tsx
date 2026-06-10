@@ -38,7 +38,7 @@ export default function CoreEliteShowcase() {
           <Reveal className="center" style={{ marginBottom: 48 }}>
             <h2 className="headline">One platform. Two forms.</h2>
           </Reveal>
-          <div className="tiles" style={{ padding: 0 }}>
+          <div className="tiles" style={{ padding: 0, gridTemplateColumns: "repeat(2, 1fr)" }}>
             <Reveal className="tile light">
               <p className="tile-eyebrow">Rifle</p>
               <h3>Core Elite Rifle</h3>
