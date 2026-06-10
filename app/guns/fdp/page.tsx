@@ -44,7 +44,7 @@ export default function FdpShowcase() {
           { kind: "product", img: "/products/fdp-folded.jpg", alt: "FDP folded flat", eyebrow: "Rugged", stat: "Built to withstand harsh environments while remaining lightweight, enhancing maneuverability in close quarters." },
           { kind: "statement", eyebrow: "Folding stock", stat: "The folding stock locks securely for transport and unfolds swiftly." },
           { kind: "image", img: "/products/fdp-deployed.jpg", alt: "Shooting the deployed FDP at the range", eyebrow: "Picatinny rail", stat: "Equipped with a 1913 Picatinny rail, enhancing operational flexibility." },
-          { kind: "product", img: "/products/fdp-detail.jpg", alt: "FDP carry-handle iron sights", eyebrow: "Iron sights", stat: "Adjustable iron sights built right into the carry handle for convenient and precise aiming." },
+          { kind: "image", img: "/products/fdp-sights.jpg", alt: "Aiming the FDP using the carry-handle iron sights", eyebrow: "Iron sights", stat: "Adjustable iron sights built right into the carry handle for convenient and precise aiming." },
           { kind: "statement", eyebrow: "Ambidextrous", stat: "Ambidextrous charging system and reversible magazine release caters to both right- and left-handed shooters." },
         ]}
       />
