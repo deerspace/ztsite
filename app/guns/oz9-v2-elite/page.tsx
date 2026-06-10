@@ -48,7 +48,7 @@ export default function EliteShowcase() {
 
       {/* Three-up build row — light band */}
       <section className="band-light">
-        <div className="wrap-wide" style={{ paddingBottom: "clamp(60px,9vw,110px)" }}>
+        <div className="wrap-wide" style={{ paddingTop: "clamp(60px,9vw,110px)", paddingBottom: "clamp(60px,9vw,110px)" }}>
           <div className="gallery" style={{ padding: 0 }}>
             {[
               { img: "oz9-elite-right.jpg", t: "Compact", d: "Carry, concealed." },
