@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ZevLogo from "@/components/art/ZevLogo";
@@ -32,27 +31,70 @@ const STORE_QUICK: NavLink[] = [
   { label: "Instructional Videos", href: "/videos" },
 ];
 
-interface GunCard {
-  name: string;
-  meta: string;
-  href: string;
-  img: string;
+// Per-product-line menus (apple.com Mac/iPhone style): an "Explore" column of
+// large links and a "Shop" column of buy links.
+interface ProductMenu {
+  key: string;
+  label: string;
+  match: string;
+  exploreTitle: string;
+  explore: NavLink[];
+  shopTitle: string;
+  shop: NavLink[];
 }
 
-const GUNS: GunCard[] = [
-  { name: "FDP", meta: "Folding Defensive Platform", href: "/guns/fdp", img: "/products/fdp-folded.jpg" },
-  { name: "OZ9 V2 Elite", meta: "Modular flagship", href: "/guns/oz9-v2-elite", img: "/products/oz9-elite-hero.jpg" },
-  { name: "OZ9 V2 Combat", meta: "Duty-ready, FDE", href: "/guns/oz9-v2-combat", img: "/products/oz9-combat-hero.jpg" },
-  { name: "OZ9 V2 Hypercomp", meta: "Integrated comp", href: "/guns/oz9-v2-hypercomp", img: "/products/oz9-hypercomp-hero.jpg" },
-  { name: "Core Elite", meta: "Pistols & rifles", href: "/guns/core-elite", img: "/products/rifle-core-elite.jpg" },
+const PRODUCT_MENUS: ProductMenu[] = [
+  {
+    key: "fdp",
+    label: "FDP",
+    match: "fdp",
+    exploreTitle: "Explore FDP",
+    explore: [{ label: "FDP", href: "/guns/fdp" }],
+    shopTitle: "Shop FDP",
+    shop: [
+      { label: "Buy FDP", href: "/buy/fdp" },
+      { label: "FDP Accessories", href: "/shop" },
+    ],
+  },
+  {
+    key: "oz9",
+    label: "OZ9",
+    match: "oz9",
+    exploreTitle: "Explore OZ9",
+    explore: [
+      { label: "OZ9 V2 Elite", href: "/guns/oz9-v2-elite" },
+      { label: "OZ9 V2 Combat", href: "/guns/oz9-v2-combat" },
+      { label: "OZ9 V2 Hypercomp", href: "/guns/oz9-v2-hypercomp" },
+    ],
+    shopTitle: "Shop OZ9",
+    shop: [
+      { label: "Buy OZ9 V2 Elite", href: "/buy/oz9-v2-elite" },
+      { label: "Buy OZ9 V2 Combat", href: "/buy/oz9-v2-combat" },
+      { label: "Buy OZ9 V2 Hypercomp", href: "/buy/oz9-v2-hypercomp" },
+      { label: "OZ9 Accessories", href: "/shop" },
+    ],
+  },
+  {
+    key: "core-elite",
+    label: "Core Elite",
+    match: "core-elite",
+    exploreTitle: "Explore Core Elite",
+    explore: [
+      { label: "Core Elite Rifle", href: "/guns/core-elite" },
+      { label: "Core Elite Pistol", href: "/guns/core-elite" },
+    ],
+    shopTitle: "Shop Core Elite",
+    shop: [
+      { label: "Buy Core Elite Rifle", href: "/buy/core-elite-rifle" },
+      { label: "Buy Core Elite Pistol", href: "/buy/core-elite-pistol" },
+    ],
+  },
 ];
 
-type MenuKey = "store" | "guns";
-
-const STORE_ROUTES = ["/store", "/buy", "/shop", "/category", "/product", "/dealers", "/warranty", "/register", "/become-a-dealer", "/firearms-faq", "/videos", "/cart", "/checkout"];
+const STORE_ROUTES = ["/store", "/shop", "/category", "/product", "/dealers", "/warranty", "/register", "/become-a-dealer", "/firearms-faq", "/videos", "/cart", "/checkout"];
 
 export default function Nav() {
-  const [open, setOpen] = useState<MenuKey | null>(null);
+  const [open, setOpen] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -74,7 +116,7 @@ export default function Nav() {
   }, [count]);
 
   // Hover intent — a small grace period stops the panel flickering closed.
-  const openMenu = (which: MenuKey) => {
+  const openMenu = (which: string) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setOpen(which);
   };
@@ -105,8 +147,8 @@ export default function Nav() {
 
   useEffect(() => { setOpen(null); setMobileOpen(false); }, [pathname]);
 
-  const inGuns = pathname.startsWith("/guns");
-  const inStore = !inGuns && STORE_ROUTES.some((r) => pathname.startsWith(r));
+  const activeProduct = PRODUCT_MENUS.find((m) => pathname.includes(m.match));
+  const inStore = !activeProduct && STORE_ROUTES.some((r) => pathname.startsWith(r));
 
   return (
     <>
@@ -123,13 +165,15 @@ export default function Nav() {
           >
             <button onClick={() => setOpen(open === "store" ? null : "store")} aria-expanded={open === "store"} aria-haspopup="true">Store</button>
           </li>
-          <li
-            className={`nav-item${open === "guns" ? " open" : ""}${inGuns ? " active" : ""}`}
-            onMouseEnter={() => openMenu("guns")}
-          >
-            <button onClick={() => setOpen(open === "guns" ? null : "guns")} aria-expanded={open === "guns"} aria-haspopup="true">Guns</button>
-          </li>
-          <li className="nav-item" onMouseEnter={scheduleClose}><Link href="/#support">Support</Link></li>
+          {PRODUCT_MENUS.map((m) => (
+            <li
+              key={m.key}
+              className={`nav-item${open === m.key ? " open" : ""}${activeProduct?.key === m.key ? " active" : ""}`}
+              onMouseEnter={() => openMenu(m.key)}
+            >
+              <button onClick={() => setOpen(open === m.key ? null : m.key)} aria-expanded={open === m.key} aria-haspopup="true">{m.label}</button>
+            </li>
+          ))}
         </ul>
 
         <div className="nav-actions">
@@ -181,27 +225,34 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* Guns — product cards */}
-      <div
-        className={`mega${open === "guns" ? " open" : ""}`}
-        onMouseEnter={() => openMenu("guns")}
-        onMouseLeave={scheduleClose}
-      >
-        <div className="mega-inner">
-          <p className="mega-col-title">Explore the lineup</p>
-          <div className="mega-grid">
-            {GUNS.map((g) => (
-              <Link key={g.name} href={g.href} className="mega-card">
-                <div className="mega-thumb">
-                  <Image src={g.img} alt={g.name} width={220} height={165} />
-                </div>
-                <div className="mega-name">{g.name}</div>
-                <div className="mega-meta">{g.meta}</div>
-              </Link>
-            ))}
+      {/* Per-product menus — Explore + Shop columns */}
+      {PRODUCT_MENUS.map((m) => (
+        <div
+          key={m.key}
+          className={`mega${open === m.key ? " open" : ""}`}
+          onMouseEnter={() => openMenu(m.key)}
+          onMouseLeave={scheduleClose}
+        >
+          <div className="mega-inner mega-store-inner">
+            <div className="mega-store-col">
+              <p className="mega-col-title">{m.exploreTitle}</p>
+              <div className="mega-shop-links">
+                {m.explore.map((l) => (
+                  <Link key={l.label} href={l.href}>{l.label}</Link>
+                ))}
+              </div>
+            </div>
+            <div className="mega-store-col">
+              <p className="mega-col-title">{m.shopTitle}</p>
+              <div className="mega-links">
+                {m.shop.map((l) => (
+                  <Link key={l.label} href={l.href}>{l.label}</Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
@@ -213,12 +264,17 @@ export default function Nav() {
             <Link key={l.label} href={l.href}>{l.label}</Link>
           ))}
         </div>
-        <div className="mnav-sec">
-          <h4>Guns</h4>
-          {GUNS.map((g) => (
-            <Link key={g.name} href={g.href}>{g.name}</Link>
-          ))}
-        </div>
+        {PRODUCT_MENUS.map((m) => (
+          <div className="mnav-sec" key={m.key}>
+            <h4>{m.label}</h4>
+            {m.explore.map((l) => (
+              <Link key={l.label} href={l.href}>{l.label}</Link>
+            ))}
+            {m.shop.map((l) => (
+              <Link key={l.label} href={l.href}>{l.label}</Link>
+            ))}
+          </div>
+        ))}
         <div className="mnav-sec">
           <h4>Quick Links</h4>
           {STORE_QUICK.map((l) => (
