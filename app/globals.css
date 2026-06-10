@@ -566,7 +566,14 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .minicart-close { background: none; border: none; color: var(--ink-2); font-size: 26px; line-height: 1; cursor: pointer; }
 .minicart-close:hover { color: var(--ink); }
 .minicart-items { flex: 1; overflow-y: auto; margin-top: 20px; display: flex; flex-direction: column; gap: 18px; }
-.minicart-empty { color: var(--ink-2); text-align: center; margin-top: 56px; font-size: 15px; }
+.minicart-empty { color: var(--ink-2); text-align: center; margin: 56px auto 0; font-size: 15px; display: flex; flex-direction: column; align-items: center; }
+
+/* Free-shipping progress */
+.ship-progress { margin-top: 16px; padding: 12px 14px; background: var(--bg-soft); border-radius: 12px; }
+.ship-progress p { font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
+.ship-progress strong { color: var(--ink); font-weight: 600; }
+.ship-bar { height: 5px; border-radius: 3px; background: #e2e2e7; overflow: hidden; }
+.ship-bar span { display: block; height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s cubic-bezier(0.16,1,0.3,1); }
 .minicart-foot { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 12px; }
 .minicart-total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; margin-bottom: 14px; }
 .minicart-foot .btn { display: flex; width: 100%; }
@@ -614,8 +621,19 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 /* ===================================================================
    Footer (light grey, Apple-style)
    =================================================================== */
-.footer { background: var(--bg-soft); padding: 52px 24px 44px; color: var(--ink-2); }
+.footer { background: var(--bg-soft); padding: 52px 24px 36px; color: var(--ink-2); }
 .footer-inner { max-width: var(--maxw); margin: 0 auto; }
+
+/* Newsletter band */
+.news { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding-bottom: 36px; margin-bottom: 32px; border-bottom: 1px solid var(--line); }
+.news-copy h3 { font-size: clamp(22px, 2.6vw, 30px); color: var(--ink); }
+.news-copy p { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+.news-form { display: flex; gap: 10px; flex: 0 1 420px; }
+.news-form input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 980px; padding: 12px 18px; font-family: inherit; font-size: 15px; background: #fff; color: var(--ink); transition: border-color 0.2s; }
+.news-form input:focus { outline: none; border-color: var(--ink); }
+.news-form .btn { white-space: nowrap; }
+.news-thanks { font-size: 15px; font-weight: 500; color: var(--ink); }
+
 .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; padding-bottom: 30px; border-bottom: 1px solid var(--line); }
 .footer-col h5 { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
 .footer-col li { margin-bottom: 9px; }
@@ -623,6 +641,14 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .footer-col a:hover { color: var(--ink); text-decoration: underline; }
 .footer-legal { padding-top: 22px; }
 .footer-legal p { font-size: 11px; line-height: 1.6; color: var(--ink-3); margin-bottom: 9px; max-width: 860px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-top: 18px; border-top: 1px solid var(--line); margin-top: 8px; }
+.footer-bottom p { font-size: 11px; color: var(--ink-3); }
+.footer-meta { display: flex; align-items: center; gap: 20px; }
+.footer-social { display: flex; gap: 14px; }
+.footer-social a { color: var(--ink-2); transition: color 0.2s; }
+.footer-social a:hover { color: var(--ink); }
+.footer-locale { font-size: 12px; color: var(--ink-2); }
+@media (max-width: 560px) { .news-form { flex-basis: 100%; } }
 
 /* SVG art helper text classes (used by remaining vector art) */
 .slide-mark { font-family: var(--font); font-size: 15px; font-weight: 600; letter-spacing: 0.3em; fill: #9a9aa2; }

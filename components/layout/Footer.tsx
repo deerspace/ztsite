@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NewsletterSignup from "./NewsletterSignup";
 
 const COLUMNS = [
   {
@@ -46,6 +47,7 @@ export default function Footer() {
   return (
     <footer className="footer" id="footer">
       <div className="footer-inner">
+        <NewsletterSignup />
         <div className="footer-cols">
           {COLUMNS.map((col) => (
             <div className="footer-col" key={col.title}>
@@ -66,10 +68,23 @@ export default function Footer() {
             and accessories. All firearm sales ship to a licensed FFL dealer. Please confirm
             legality in your state before ordering.
           </p>
-          <p>
-            Copyright © 2026 ZEV Technologies, Inc. All rights reserved. Concept redesign — not
-            affiliated with or endorsed by ZEV Technologies.
-          </p>
+        </div>
+        <div className="footer-bottom">
+          <p>Copyright © 2026 ZEV Technologies, Inc. Concept redesign — not affiliated with or endorsed by ZEV Technologies.</p>
+          <div className="footer-meta">
+            <div className="footer-social" aria-label="Social">
+              <a href="#" aria-label="Instagram">
+                <svg viewBox="0 0 20 20" width="18" height="18"><rect x="3" y="3" width="14" height="14" rx="4" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="14.2" cy="5.8" r="1" fill="currentColor"/></svg>
+              </a>
+              <a href="#" aria-label="YouTube">
+                <svg viewBox="0 0 20 20" width="18" height="18"><rect x="2" y="5" width="16" height="10" rx="3" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M8.5 7.5l4 2.5-4 2.5z" fill="currentColor"/></svg>
+              </a>
+              <a href="#" aria-label="X">
+                <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </a>
+            </div>
+            <span className="footer-locale">United States</span>
+          </div>
         </div>
       </div>
     </footer>
