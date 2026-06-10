@@ -608,7 +608,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
    Shop (white grid) + category pills
    =================================================================== */
 /* Category hero (split) */
-.cat-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; max-width: var(--maxw-wide); margin: 0 auto; padding: clamp(40px,6vw,72px) 24px clamp(20px,3vw,32px); }
+.cat-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; max-width: var(--maxw-wide); margin: 0 auto; padding: clamp(56px,8vw,90px) 24px clamp(20px,3vw,32px); }
 .cat-hero-text .eyebrow { color: var(--accent); }
 .cat-hero-text h1 { font-size: clamp(40px, 6vw, 68px); margin-top: 8px; }
 .cat-hero-text .lede { margin-top: 12px; max-width: 36ch; }
@@ -651,7 +651,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 @media (max-width: 640px) { .trust-row { grid-template-columns: 1fr; gap: 14px; } }
 
 /* Breadcrumbs */
-.crumbs { max-width: var(--maxw-wide); margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.crumbs { max-width: var(--maxw-wide); margin: 0 auto; padding: 28px 24px 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
 .crumbs a:hover { color: var(--ink); text-decoration: underline; }
 .crumbs span[aria-hidden] { color: var(--ink-3); }
 .crumbs-current { color: var(--ink); }
@@ -749,7 +749,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .line-remove:hover { color: var(--ink); }
 .line-price { font-size: 14px; font-weight: 600; white-space: nowrap; }
 
-.cart-page { max-width: 880px; margin: 0 auto; padding: clamp(56px,8vw,80px) 24px clamp(90px,12vw,130px); }
+.cart-page { max-width: 880px; margin: 0 auto; padding: clamp(56px,8vw,90px) 24px clamp(90px,12vw,130px); }
 .cart-page h1 { font-size: clamp(34px,5vw,56px); margin-bottom: 34px; }
 .cart-list { display: flex; flex-direction: column; gap: 24px; }
 .cart-page .line-art { width: 110px; }
@@ -762,7 +762,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .cart-empty { text-align: center; padding: 60px 0 20px; color: var(--ink-2); }
 .cart-empty .btn { margin-top: 20px; }
 
-.checkout-stub { max-width: 660px; margin: 0 auto; padding: clamp(64px,9vw,100px) 24px clamp(100px,14vw,150px); text-align: center; }
+.checkout-stub { max-width: 660px; margin: 0 auto; padding: clamp(56px,8vw,90px) 24px clamp(90px,12vw,130px); text-align: center; }
 .checkout-stub h1 { font-size: clamp(34px,5vw,52px); }
 .stub-card { background: var(--bg-soft); border-radius: var(--radius); padding: 32px; margin-top: 32px; text-align: left; }
 .stub-card .line + .line { margin-top: 16px; }
