@@ -40,12 +40,12 @@ export default function FdpShowcase() {
         watchLabel="Watch how it folds"
         watchHref="/videos"
         cards={[
-          { kind: "image", img: "/products/fdp-bg.jpg", alt: "Drawing the folded FDP from a sling bag", eyebrow: "Carry", stat: "Folds into a bag." },
-          { kind: "product", img: "/products/fdp-folded.jpg", alt: "FDP folded flat", eyebrow: "Folded", stat: "Folds to nothing." },
-          { kind: "statement", eyebrow: "Platform", stat: "9mm. Full size.", sub: "A real fighting platform — collapsed to nothing." },
-          { kind: "image", img: "/products/fdp-deployed.jpg", alt: "Shooting the deployed FDP at the range", eyebrow: "Deploy", stat: "Up in a heartbeat." },
-          { kind: "product", img: "/products/fdp-detail.jpg", alt: "FDP locking mechanism detail", eyebrow: "Mechanism", stat: "Locks like a vault." },
-          { kind: "statement", eyebrow: "Configure", stat: "Carbine or pistol.", sub: "Run 16″ or pistol-length — the manual of arms never changes." },
+          { kind: "image", img: "/products/fdp-bg.jpg", alt: "Drawing the folded FDP from a sling bag", eyebrow: "Compact", stat: "Extremely compact and portable without compromising on firepower or reliability." },
+          { kind: "product", img: "/products/fdp-folded.jpg", alt: "FDP folded flat", eyebrow: "Rugged", stat: "Built to withstand harsh environments while remaining lightweight, enhancing maneuverability in close quarters." },
+          { kind: "statement", eyebrow: "Folding stock", stat: "The folding stock locks securely for transport and unfolds swiftly." },
+          { kind: "image", img: "/products/fdp-deployed.jpg", alt: "Shooting the deployed FDP at the range", eyebrow: "Picatinny rail", stat: "Equipped with a 1913 Picatinny rail, enhancing operational flexibility." },
+          { kind: "product", img: "/products/fdp-detail.jpg", alt: "FDP carry-handle iron sights", eyebrow: "Iron sights", stat: "Adjustable iron sights built right into the carry handle for convenient and precise aiming." },
+          { kind: "statement", eyebrow: "Ambidextrous", stat: "Ambidextrous charging system and reversible magazine release caters to both right- and left-handed shooters." },
         ]}
       />
 
