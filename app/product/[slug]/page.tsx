@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import ProductMedia from "@/components/product/ProductMedia";
+import ProductCard from "@/components/product/ProductCard";
 import Price from "@/components/product/Price";
 import AddToCartButton from "@/components/product/AddToCartButton";
 import { catalog } from "@/lib/commerce";
@@ -32,15 +34,35 @@ export default async function ProductPage({ params }: Props) {
   const product = await catalog.getProductBySlug(slug);
   if (!product) notFound();
 
+  const category = product.categories[0];
+  const related = category
+    ? (await catalog.getProducts({ categorySlug: category.slug }))
+        .filter((p) => p.id !== product.id)
+        .slice(0, 3)
+    : [];
+
   return (
-    <section className="buy">
+    <>
+      <nav className="crumbs" aria-label="Breadcrumb">
+        <Link href="/shop">Shop</Link>
+        <span aria-hidden="true">/</span>
+        {category && (
+          <>
+            <Link href={`/category/${category.slug}`}>{category.name}</Link>
+            <span aria-hidden="true">/</span>
+          </>
+        )}
+        <span className="crumbs-current">{product.name}</span>
+      </nav>
+
+      <section className="buy" style={{ paddingTop: "clamp(20px,3vw,32px)" }}>
       <div className="buy-media">
         <div className="buy-stage">
           <ProductMedia product={product} detailed />
         </div>
       </div>
       <div className="buy-info">
-        <p className="eyebrow">{product.categories[0]?.name ?? "ZEV"}</p>
+        <p className="eyebrow">{category?.name ?? "ZEV"}</p>
         <h1>{product.name}</h1>
         <div className="buy-short" dangerouslySetInnerHTML={{ __html: product.short_description }} />
         <p className="buy-price"><Price product={product} /></p>
@@ -54,6 +76,20 @@ export default async function ProductPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: product.description }}
         />
       </div>
-    </section>
+      </section>
+
+      {related.length > 0 && (
+        <section className="related">
+          <div className="wrap-wide">
+            <h2 className="related-title">More {category?.name}</h2>
+            <div className="related-grid">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} showArt />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
