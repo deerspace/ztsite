@@ -2,14 +2,14 @@ import Carousel from "@/components/ux/Carousel";
 import ProductCard from "@/components/product/ProductCard";
 import { catalog } from "@/lib/commerce";
 
-// Featured slugs in display order; anything missing from the store is skipped.
+// Featured component parts (the shoppable side of the homepage).
 const FEATURED = [
-  "oz9-v2-elite",
-  "oz9-v2-combat",
-  "oz9-v2-hypercomp",
   "citadel-slide",
+  "octane-slide",
   "fulcrum-trigger",
+  "pro-curved-face-trigger",
   "pro-match-barrel-bronze",
+  "combat-sights",
 ];
 
 export default async function LineupCarousel() {
@@ -19,10 +19,10 @@ export default async function LineupCarousel() {
   );
 
   return (
-    <section className="lineup" id="lineup">
-      <Carousel title="The lineup.">
+    <section className="lineup">
+      <Carousel title="Upgrade your carry.">
         {featured.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} showArt />
         ))}
       </Carousel>
     </section>

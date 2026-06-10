@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 // Port of the static site's IntersectionObserver scroll-reveal: the wrapper
 // starts translated/transparent (.reveal) and gets .in added once ~15% visible.
 export default function Reveal({
   children,
   className = "",
+  style,
 }: {
   children: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -32,7 +34,7 @@ export default function Reveal({
   }, []);
 
   return (
-    <div ref={ref} className={`reveal ${className}`.trim()}>
+    <div ref={ref} className={`reveal ${className}`.trim()} style={style}>
       {children}
     </div>
   );

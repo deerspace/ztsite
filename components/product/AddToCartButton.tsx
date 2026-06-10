@@ -23,7 +23,7 @@ export default function AddToCartButton({
   };
 
   return (
-    <div className="pdp-buy-row">
+    <div className="add-row">
       <div className="qty">
         <button
           aria-label="Decrease quantity"

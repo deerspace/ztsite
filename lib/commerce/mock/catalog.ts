@@ -1,4 +1,4 @@
-import type { StoreCategory, StorePrices, StoreProduct } from "../types";
+import type { StoreCategory, StoreImage, StorePrices, StoreProduct } from "../types";
 
 // Amounts are cents (Store API minor-unit convention).
 function usd(price: number, range?: [number, number]): StorePrices {
@@ -19,12 +19,22 @@ function usd(price: number, range?: [number, number]): StorePrices {
   };
 }
 
+// Real photo (in /public/products) shaped like a Store API image so the
+// swap to a live store is transparent. SVG art remains the fallback for
+// parts that have no photo yet.
+function img(file: string, alt: string): StoreImage {
+  const src = `/products/${file}`;
+  return { id: 0, src, thumbnail: src, srcset: "", sizes: "", name: file, alt };
+}
+
 const categoryDefs = [
-  { id: 1, slug: "pistols", name: "Pistols", description: "The OZ9 modular pistol platform." },
-  { id: 2, slug: "slides", name: "Slides", description: "Optic-ready performance slides." },
-  { id: 3, slug: "triggers", name: "Triggers", description: "Match-grade trigger systems." },
-  { id: 4, slug: "barrels", name: "Barrels", description: "Match-grade barrels in black and bronze." },
-  { id: 5, slug: "sights", name: "Sights", description: "Combat sights, fast to find." },
+  { id: 1, slug: "pistols", name: "Pistols", description: "The OZ9 modular pistol platform and Core Elite AR pistols." },
+  { id: 2, slug: "rifles", name: "Rifles", description: "Billet AR-platform rifles, built to a tolerance." },
+  { id: 6, slug: "fdp", name: "FDP", description: "The Folding Defensive Platform — ZEV × Magpul." },
+  { id: 2001, slug: "slides", name: "Slides", description: "Optic-ready performance slides." },
+  { id: 2002, slug: "triggers", name: "Triggers", description: "Match-grade trigger systems." },
+  { id: 2003, slug: "barrels", name: "Barrels", description: "Match-grade barrels in black and bronze." },
+  { id: 2004, slug: "sights", name: "Sights", description: "Combat sights, fast to find." },
 ];
 
 export const mockCategories: StoreCategory[] = categoryDefs.map((c) => ({
@@ -47,22 +57,30 @@ interface MockProductDef {
   category: string;
   prices: StorePrices;
   has_options?: boolean;
+  images?: StoreImage[];
   short_description: string;
   description: string;
 }
 
 const productDefs: MockProductDef[] = [
+  // ===== GUNS (real photography, configurable) =====
   {
     id: 101,
     name: "OZ9 V2 Elite",
     slug: "oz9-v2-elite",
     sku: "OZ9-V2-ELITE",
     category: "pistols",
-    prices: usd(179900, [179900, 209900]),
+    prices: usd(176300, [176300, 181500]),
     has_options: true,
-    short_description: "<p>Three slide lengths. Threaded or non. The flagship, fully modular.</p>",
+    images: [
+      img("oz9-elite-hero.jpg", "ZEV OZ9 V2 Elite pistol, three-quarter view"),
+      img("oz9-elite-right.jpg", "OZ9 V2 Elite, right profile"),
+      img("oz9-elite-left.jpg", "OZ9 V2 Elite, left profile"),
+      img("oz9-elite-angle.jpg", "OZ9 V2 Elite, dynamic angle"),
+    ],
+    short_description: "<p>Three slide lengths. Two grips. One receiver. The flagship, fully modular.</p>",
     description:
-      "<p>The OZ9 V2 Elite is the flagship of the ZEV modular pistol platform. A billet steel receiver carries the fire control group independent of the grip, so you can move between three slide lengths, threaded or non-threaded PRO Match barrels, and two grip sizes without re-zeroing your trigger.</p><p>Every Elite ships with a ZEV PRO Curved Face Trigger, optic-ready slide with window cuts, and a bronze TiCN match barrel.</p>",
+      "<p>The OZ9 V2 Elite is the flagship of the ZEV modular pistol platform. A billet steel receiver carries the fire-control group independent of the polymer grip, so you can move between Compact, Full, and Long slides, threaded or standard PRO Match barrels, and two grip sizes — without ever re-learning your trigger.</p><p>Every Elite ships with a ZEV PRO Curved Face Trigger, an optic-ready slide with signature window cuts, and a match barrel in black or bronze.</p>",
   },
   {
     id: 102,
@@ -70,11 +88,16 @@ const productDefs: MockProductDef[] = [
     slug: "oz9-v2-combat",
     sku: "OZ9-V2-COMBAT",
     category: "pistols",
-    prices: usd(129900, [129900, 144900]),
+    prices: usd(149900, [149900, 149900]),
     has_options: true,
-    short_description: "<p>Windowless slide, PRO match barrel, duty-ready in three sizes.</p>",
+    images: [
+      img("oz9-combat-hero.jpg", "ZEV OZ9 V2 Combat pistol in FDE, right side"),
+      img("oz9-combat-angle.jpg", "OZ9 V2 Combat, pointing right"),
+      img("oz9-combat-left.jpg", "OZ9 V2 Combat, left profile"),
+    ],
+    short_description: "<p>Windowless slide, PRO match barrel, duty-ready. Now in Flat Dark Earth.</p>",
     description:
-      "<p>Built around ZEV's windowless OZ9 V2 Combat slide, a PRO match barrel, and the PRO Curved Face Trigger. Available in Compact, Compact X, and Full-Size configurations — duty-ready out of the box.</p>",
+      "<p>Built around ZEV's windowless OZ9 V2 Combat slide, a PRO match barrel, and the PRO Curved Face Trigger. The Combat trades the Elite's window cuts for a sealed, duty-first slide — and wears it in Flat Dark Earth. Available in Compact, Compact X, and Full-Size.</p>",
   },
   {
     id: 103,
@@ -82,24 +105,67 @@ const productDefs: MockProductDef[] = [
     slug: "oz9-v2-hypercomp",
     sku: "OZ9-V2-HYPERCOMP",
     category: "pistols",
-    prices: usd(199900, [199900, 214900]),
+    prices: usd(189900, [189900, 189900]),
     has_options: true,
-    short_description: "<p>Integrated compensation. Four ports, zero added length.</p>",
+    images: [
+      img("oz9-hypercomp-hero.jpg", "ZEV OZ9 V2 Hypercomp pistol, beauty shot"),
+      img("oz9-hypercomp-angle.jpg", "OZ9 V2 Hypercomp, pointing right"),
+      img("oz9-hypercomp-detail.jpg", "OZ9 V2 Hypercomp compensator detail"),
+      img("oz9-hypercomp-life.jpg", "OZ9 V2 Hypercomp, lifestyle"),
+    ],
+    short_description: "<p>Integrated compensation. Four ports machined into the barrel. Zero added length.</p>",
     description:
-      "<p>Four tapered vertical ports machined directly into the top of the barrel vent gases upward — taming muzzle rise without adding an inch to the slide. Compensator benefits, concealment footprint.</p>",
+      "<p>The Hypercomp brings compensator performance to the compact platform. Four tapered vertical ports are machined directly into the top of the barrel, venting gas upward to flatten muzzle rise — with no can, no comp, and not one extra inch of slide.</p>",
   },
   {
-    id: 104,
-    name: "OZ9 V2 Compact",
-    slug: "oz9-v2-compact",
-    sku: "OZ9-V2-COMPACT",
-    category: "pistols",
-    prices: usd(149900, [149900, 159900]),
+    id: 110,
+    name: "FDP — Folding Defensive Platform",
+    slug: "fdp",
+    sku: "FDP",
+    category: "fdp",
+    prices: usd(169900, [169900, 169900]),
     has_options: true,
-    short_description: "<p>The proven compact footprint that became the foundation of the platform.</p>",
+    images: [
+      img("fdp-carbine-rs.jpg", "ZEV FDP carbine, right side, deployed"),
+      img("fdp-carbine-ls34.jpg", "ZEV FDP carbine, left three-quarter"),
+      img("fdp-folded.jpg", "ZEV FDP folded flat"),
+      img("fdp-detail.jpg", "ZEV FDP folding mechanism detail"),
+    ],
+    short_description: "<p>ZEV × Magpul. A 9mm platform that folds flat — and deploys in a heartbeat.</p>",
     description:
-      "<p>The compact OZ9 platform that ZEV standardized the V2 line around. Carries like a compact, shoots like a full-size — the receiver-mounted fire control group keeps the trigger identical across the family.</p>",
+      "<p>Developed with Magpul, the Folding Defensive Platform folds to a fraction of its deployed length and stands back up in a single motion. Configured as a carbine or a pistol, the FDP is the most concealable, deployable 9mm ZEV has ever built. Limited to one per order.</p>",
   },
+  {
+    id: 120,
+    name: "Core Elite Rifle",
+    slug: "core-elite-rifle",
+    sku: "AR15-CE-RIFLE",
+    category: "rifles",
+    prices: usd(228400, [228400, 228400]),
+    has_options: true,
+    images: [img("rifle-core-elite.jpg", "ZEV AR15 Billet Core Elite Rifle, .223 Wylde, 16 inch")],
+    short_description: "<p>Billet upper and lower, .223 Wylde, 16″. An AR machined like a ZEV.</p>",
+    description:
+      "<p>The Core Elite Rifle is a complete billet AR-15 in .223 Wylde with a 16″ barrel — the same obsession with tolerance and finish that defines the OZ9, scaled to the rifle. Matched billet upper and lower, free-float handguard, and a ZEV trigger.</p>",
+  },
+  {
+    id: 121,
+    name: "Core Elite Pistol",
+    slug: "core-elite-pistol",
+    sku: "AR15-CE-PISTOL",
+    category: "pistols",
+    prices: usd(186400, [186400, 186400]),
+    has_options: true,
+    images: [
+      img("pistol-core-elite-556.jpg", "ZEV AR15 Core Elite Pistol, .223 Wylde, 10.5 inch"),
+      img("pistol-core-elite-300.jpg", "ZEV AR15 Core Elite Pistol, 300 BLK, 8.5 inch"),
+    ],
+    short_description: "<p>Billet AR pistol in .223 Wylde or 300 BLK. Big-bore performance, braced footprint.</p>",
+    description:
+      "<p>The Core Elite Pistol packs the billet Core platform into a braced AR pistol — your choice of .223 Wylde with a 10.5″ barrel or 300 Blackout at 8.5″. Free-float rail, ZEV trigger, and the finish to match.</p>",
+  },
+
+  // ===== COMPONENTS (SVG art fallback, simple add-to-cart) =====
   {
     id: 201,
     name: "Citadel Slide",
@@ -199,7 +265,7 @@ export const mockProducts: StoreProduct[] = productDefs.map((p) => ({
   description: p.description,
   short_description: p.short_description,
   prices: p.prices,
-  images: [], // empty → UI falls back to SVG art; real store images drop in here
+  images: p.images ?? [],
   categories: [cat(p.category)],
   is_in_stock: true,
   is_purchasable: true,

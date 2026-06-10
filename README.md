@@ -8,7 +8,16 @@ A concept redesign of [zevtechnologies.com](https://www.zevtechnologies.com/) in
 
 - Next.js 15 (App Router) + React 19 + TypeScript — no other runtime dependencies
 - Hand-rolled CSS design system in [app/globals.css](app/globals.css) (no Tailwind)
-- Product art is inline SVG ([components/art/](components/art/)); real product photos drop in automatically once the store provides images
+- Real product photography in [public/products/](public/products/); component parts fall back to inline SVG art ([components/art/](components/art/))
+
+## Design system & information architecture
+
+White-first, with dark reserved for cinematic product moments — the same rhythm as apple.com:
+
+- **Showcase (dark)** — `app/guns/*` bespoke pages, one distinct layout per firearm (FDP, OZ9 V2 Elite / Combat / Hypercomp, Core Elite). Reached from the **Guns** mega-dropdown.
+- **Buy (white)** — `app/buy/[slug]` Apple-style configurator (slide length / grip / barrel / finish, live price) for firearms; `app/product/[slug]` simple add-to-cart for parts; `app/shop` + `app/category/[slug]` parts grid. Reached from the **Shop** mega-dropdown.
+- Firearm content (configurator options, tagline, hero image) lives in [lib/content/guns.ts](lib/content/guns.ts); price and cart come from the catalog by slug.
+- Studio photos ship on a white sweep and are composited onto light surfaces with `mix-blend-mode: multiply`, so the product appears to float.
 
 ## Run it
 
