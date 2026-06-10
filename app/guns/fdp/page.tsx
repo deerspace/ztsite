@@ -79,7 +79,7 @@ export default function FdpShowcase() {
           </Link>
         </Reveal>
         <Reveal className="show-stage charcoal">
-          <Image src="/products/fdp-carbine-ls34.jpg" alt="FDP carbine deployed, three-quarter view" width={1000} height={1000} />
+          <Image src="/products/fdp-deployed.jpg" alt="Shooting the deployed FDP carbine at the range" width={2000} height={1333} sizes="(max-width: 834px) 100vw, 580px" />
         </Reveal>
       </section>
 
