@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import Ribbon from "@/components/layout/Ribbon";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import CartProvider from "@/components/cart/CartProvider";
@@ -47,7 +46,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <CartProvider>
           <a href="#main" className="skip-link">Skip to content</a>
-          <Ribbon />
           <Nav />
           <main id="main"><RouteTransition>{children}</RouteTransition></main>
           <Footer />
