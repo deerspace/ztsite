@@ -35,8 +35,8 @@ export default function FdpShowcase() {
 
       {/* Get the highlights — apple-style reel */}
       <Highlights
-        eyebrow="ZEV × Magpul"
-        heading="Get the highlights."
+        eyebrow="FDP"
+        heading="See it in action."
         watchLabel="Watch how it folds"
         watchHref="/videos"
         cards={[
