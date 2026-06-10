@@ -13,9 +13,9 @@ export interface Highlight {
   alt?: string;
 }
 
-// apple.com "Get the highlights" reel: a heading + a watch link, and a
-// horizontal scroll-snap row of cards (scene photos, light product shots, and
-// bold statement cards) with paddle buttons + click-drag scrubbing.
+// apple.com "Get the highlights" reel: one large card in focus with the
+// neighbours peeking, the active card's caption fading in at the top and its
+// image very slowly zooming. Click/tap any card (or the paddles) to centre it.
 export default function Highlights({
   eyebrow,
   heading,
@@ -30,36 +30,50 @@ export default function Highlights({
   cards: Highlight[];
 }) {
   const scroller = useRef<HTMLDivElement>(null);
-  const baseStart = useRef(0);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
+  const raf = useRef(0);
+  const [active, setActive] = useState(0);
 
-  const update = useCallback(() => {
+  // The card whose centre is nearest the track's centre is the active one.
+  const measure = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
-    setCanPrev(el.scrollLeft > baseStart.current + 8);
-    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+    const els = el.querySelectorAll<HTMLElement>(".hl-card");
+    const trackMid = el.getBoundingClientRect().left + el.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    els.forEach((c, i) => {
+      const r = c.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - trackMid);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    setActive(best);
   }, []);
 
   useEffect(() => {
     const el = scroller.current;
     if (!el) return;
-    baseStart.current = el.scrollLeft;
-    update();
-    el.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      el.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+    const onScroll = () => {
+      cancelAnimationFrame(raf.current);
+      raf.current = requestAnimationFrame(measure);
     };
-  }, [update]);
+    measure();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure]);
 
-  const scrollByCard = (dir: 1 | -1) => {
+  const centerCard = (i: number) => {
     const el = scroller.current;
     if (!el) return;
-    const card = el.querySelector<HTMLElement>(".hl-card");
-    const step = card ? card.offsetWidth + 18 : 340;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+    const card = el.querySelectorAll<HTMLElement>(".hl-card")[i];
+    if (!card) return;
+    const trackMid = el.getBoundingClientRect().left + el.clientWidth / 2;
+    const r = card.getBoundingClientRect();
+    el.scrollTo({ left: el.scrollLeft + (r.left + r.width / 2 - trackMid), behavior: "smooth" });
   };
 
   // Click-drag scrubbing on desktop; native touch scrolling handles mobile.
@@ -98,8 +112,8 @@ export default function Highlights({
           )}
         </div>
         <div className="hl-nav">
-          <button className="hl-btn" aria-label="Previous highlight" disabled={!canPrev} onClick={() => scrollByCard(-1)}>‹</button>
-          <button className="hl-btn" aria-label="Next highlight" disabled={!canNext} onClick={() => scrollByCard(1)}>›</button>
+          <button className="hl-btn" aria-label="Previous highlight" disabled={active === 0} onClick={() => centerCard(active - 1)}>‹</button>
+          <button className="hl-btn" aria-label="Next highlight" disabled={active === cards.length - 1} onClick={() => centerCard(active + 1)}>›</button>
         </div>
       </div>
 
@@ -113,19 +127,29 @@ export default function Highlights({
         onClickCapture={onClickCapture}
       >
         {cards.map((c, i) => (
-          <article className={`hl-card hl-card--${c.kind}`} key={i}>
-            {c.img && (c.kind === "product" ? (
-              <div className="hl-pic">
-                <Image src={c.img} alt={c.alt ?? ""} fill sizes="(max-width: 640px) 80vw, 360px" style={{ objectFit: "contain" }} />
-              </div>
-            ) : (
-              <Image src={c.img} alt={c.alt ?? ""} fill sizes="(max-width: 640px) 80vw, 360px" style={{ objectFit: "cover" }} />
-            ))}
+          <article
+            className={`hl-card hl-card--${c.kind}${i === active ? " is-active" : ""}`}
+            key={i}
+            role="button"
+            tabIndex={0}
+            aria-label={`${c.eyebrow}: ${c.stat}`}
+            aria-current={i === active}
+            onClick={() => centerCard(i)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); centerCard(i); } }}
+          >
+            {c.kind === "image" && c.img && (
+              <Image src={c.img} alt={c.alt ?? ""} fill sizes="(max-width: 740px) 84vw, 900px" style={{ objectFit: "cover" }} />
+            )}
             <div className="hl-cap">
               <span className="hl-eyebrow">{c.eyebrow}</span>
               <p className="hl-stat">{c.stat}</p>
               {c.sub && <p className="hl-sub">{c.sub}</p>}
             </div>
+            {c.kind === "product" && c.img && (
+              <div className="hl-pic">
+                <Image src={c.img} alt={c.alt ?? ""} fill sizes="(max-width: 740px) 84vw, 900px" style={{ objectFit: "contain" }} />
+              </div>
+            )}
           </article>
         ))}
       </div>
