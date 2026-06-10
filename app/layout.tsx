@@ -5,6 +5,7 @@ import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import CartProvider from "@/components/cart/CartProvider";
 import MiniCart from "@/components/cart/MiniCart";
+import RouteTransition from "@/components/ux/RouteTransition";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="#main" className="skip-link">Skip to content</a>
           <Ribbon />
           <Nav />
-          <main id="main">{children}</main>
+          <main id="main"><RouteTransition>{children}</RouteTransition></main>
           <Footer />
           <MiniCart />
         </CartProvider>
