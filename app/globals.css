@@ -60,6 +60,12 @@ h1, h2, .display, .headline, .title { text-wrap: balance; }
 /* Anchor targets clear the sticky nav (+ showcase sub-nav) on jump */
 [id] { scroll-margin-top: calc(var(--nav-h) + 64px); }
 
+/* Subtle scrollbar (WebKit) */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 8px; border: 3px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.3); background-clip: padding-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
 /* ===== Type scale ===== */
 h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .display { font-size: clamp(44px, 7vw, 88px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
