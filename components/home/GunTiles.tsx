@@ -76,7 +76,7 @@ export default function GunTiles() {
             <Link className="link-arrow" href={t.buy}>Buy <span>›</span></Link>
           </div>
           <div className="tile-img">
-            <Image src={t.img} alt={t.name} width={760} height={760} />
+            <Image src={t.img} alt={t.name} width={760} height={760} sizes="(max-width: 834px) 100vw, 50vw" />
           </div>
         </Reveal>
       ))}

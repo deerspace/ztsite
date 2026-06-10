@@ -32,8 +32,8 @@ export default function ProductCard({
         <Link href={href} className={`card-art${hoverImage ? " swap" : ""}`} aria-hidden="true" tabIndex={-1}>
           {image ? (
             <>
-              <Image src={image.src} alt={product.name} width={280} height={280} />
-              {hoverImage && <Image className="card-art-alt" src={hoverImage.src} alt="" width={280} height={280} />}
+              <Image src={image.src} alt={product.name} width={280} height={280} sizes="(max-width: 834px) 80vw, 300px" />
+              {hoverImage && <Image className="card-art-alt" src={hoverImage.src} alt="" width={280} height={280} sizes="(max-width: 834px) 80vw, 300px" />}
             </>
           ) : (
             <ProductArt slug={product.slug} />
