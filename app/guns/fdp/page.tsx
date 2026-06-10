@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/ux/Reveal";
-import Parallax from "@/components/ux/Parallax";
 import ShowcaseNav from "@/components/showcase/ShowcaseNav";
+import Highlights from "@/components/showcase/Highlights";
 import { SpecStrip, ShowcaseCTA } from "@/components/showcase/Showcase";
 
 export const metadata: Metadata = {
@@ -33,20 +33,21 @@ export default function FdpShowcase() {
         </Reveal>
       </section>
 
-      {/* Full-bleed lifestyle */}
-      <div className="show-bleed parallax-frame">
-        <Parallax amount={44}>
-          <Image src="/products/fdp-bg.jpg" alt="Drawing the folded FDP from a sling bag" width={2400} height={1200} sizes="100vw" priority />
-        </Parallax>
-        <div className="show-bleed-copy">
-          <Reveal>
-            <h2 className="title">Carry it folded.</h2>
-            <p className="lede" style={{ color: "#f5f5f7", maxWidth: "30ch" }}>
-              A full 9mm platform that disappears into a bag — and stands up the instant you need it.
-            </p>
-          </Reveal>
-        </div>
-      </div>
+      {/* Get the highlights — apple-style reel */}
+      <Highlights
+        eyebrow="ZEV × Magpul"
+        heading="Get the highlights."
+        watchLabel="Watch how it folds"
+        watchHref="/videos"
+        cards={[
+          { kind: "image", img: "/products/fdp-bg.jpg", alt: "Drawing the folded FDP from a sling bag", eyebrow: "Carry", stat: "Folds into a bag." },
+          { kind: "product", img: "/products/fdp-folded.jpg", alt: "FDP folded flat", eyebrow: "Folded", stat: "Folds to nothing." },
+          { kind: "statement", eyebrow: "Platform", stat: "9mm. Full size.", sub: "A real fighting platform — collapsed to nothing." },
+          { kind: "image", img: "/products/fdp-deployed.jpg", alt: "Shooting the deployed FDP at the range", eyebrow: "Deploy", stat: "Up in a heartbeat." },
+          { kind: "product", img: "/products/fdp-detail.jpg", alt: "FDP locking mechanism detail", eyebrow: "Mechanism", stat: "Locks like a vault." },
+          { kind: "statement", eyebrow: "Configure", stat: "Carbine or pistol.", sub: "Run 16″ or pistol-length — the manual of arms never changes." },
+        ]}
+      />
 
       {/* Folded — light band */}
       <section className="band-light" id="fold">
