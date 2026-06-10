@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import { NavThemeProvider } from "@/components/layout/NavThemeContext";
 import CartProvider from "@/components/cart/CartProvider";
 import MiniCart from "@/components/cart/MiniCart";
 import RouteTransition from "@/components/ux/RouteTransition";
@@ -45,11 +46,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.variable} data-scroll-behavior="smooth">
       <body>
         <CartProvider>
-          <a href="#main" className="skip-link">Skip to content</a>
-          <Nav />
-          <main id="main"><RouteTransition>{children}</RouteTransition></main>
-          <Footer />
-          <MiniCart />
+          <NavThemeProvider>
+            <a href="#main" className="skip-link">Skip to content</a>
+            <Nav />
+            <main id="main"><RouteTransition>{children}</RouteTransition></main>
+            <Footer />
+            <MiniCart />
+          </NavThemeProvider>
         </CartProvider>
       </body>
     </html>

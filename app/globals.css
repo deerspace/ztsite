@@ -17,6 +17,7 @@
   --dark-soft: #101012;
   --dark-2: #1d1d1f;
   --nav-bg: #202125; /* top-nav + dropdown background (placeholder grey) */
+  --nav-bg-light: #fbfbfd; /* nav + dropdown over a light hero photo */
   --dark-3: #2a2a2e;
   --on-dark: #f5f5f7;
   --on-dark-2: #a1a1a6;
@@ -295,6 +296,32 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 }
 .mega-overlay.open { opacity: 1; visibility: visible; }
 
+/* ── Light chrome — applied when the hero behind the nav is a light photo.
+   Detected at runtime from the hero image's luminance (NavThemeContext). */
+.nav.light { background: var(--nav-bg-light); }
+.nav.light .nav-logo { color: var(--ink); }
+.nav.light .nav-item > button,
+.nav.light .nav-item > a { color: var(--ink-2); }
+.nav.light .nav-item > button:hover,
+.nav.light .nav-item > a:hover,
+.nav.light .nav-item.open > button,
+.nav.light .nav-item.active > button,
+.nav.light .nav-item.active > a { color: var(--ink); }
+.nav.light .nav-icon { color: rgba(0, 0, 0, 0.6); }
+.nav.light .nav-icon:hover { color: var(--ink); }
+.nav.light .nav-burger { color: var(--ink); }
+.nav.light.scrolled { border-bottom-color: rgba(0, 0, 0, 0.1); }
+.nav.light :focus-visible { outline-color: var(--ink); }
+
+.mega.light { background: var(--nav-bg-light); }
+.mega.light .mega-col-title { color: var(--ink-2); }
+.mega.light .mega-shop-links a { color: var(--ink); }
+.mega.light .mega-shop-links a:hover { color: #000; }
+.mega.light .mega-links a { color: var(--ink-2); }
+.mega.light .mega-links a:hover { color: var(--ink); }
+
+.mega-overlay.light { background: rgba(255, 255, 255, 0.4); }
+
 /* mobile nav */
 .nav-burger { display: none; background: none; border: none; color: #f5f5f7; cursor: pointer; padding: 4px; }
 /* Mobile menu only exists at <=834px; hidden entirely on desktop so the
@@ -409,6 +436,14 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .home-hero h1 { font-size: clamp(40px, 6.5vw, 80px); font-weight: 700; letter-spacing: -0.03em; }
 .home-hero .sub { font-size: clamp(19px, 2.2vw, 26px); font-weight: 500; margin-top: 8px; color: #f5f5f7; }
 .home-hero .cta-row { display: flex; gap: 24px; justify-content: center; margin-top: 24px; }
+/* Light hero — dark copy over a bright photo; the nav goes white to match. */
+.home-hero.on-light { color: var(--ink); }
+.home-hero.on-light .sub { color: var(--ink-2); }
+.home-hero.on-light .eyebrow { color: var(--ink-3); }
+.home-hero.on-light .home-hero-bg::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 30%);
+}
+.home-hero.on-light :focus-visible { outline-color: var(--ink); }
 
 /* Showcase tiles grid (gun families) */
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }

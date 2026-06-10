@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ZevLogo from "@/components/art/ZevLogo";
 import SearchOverlay from "@/components/search/SearchOverlay";
 import { useCart } from "@/components/cart/CartProvider";
+import { useNavTheme } from "@/components/layout/NavThemeContext";
 
 // useLayoutEffect on the client, useEffect on the server (avoids the SSR warning).
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -134,6 +135,8 @@ export default function Nav() {
   const prevCount = useRef(0);
   const pathname = usePathname();
   const { cart, ready, openMiniCart } = useCart();
+  const { theme } = useNavTheme();
+  const light = theme === "light";
   const count = cart?.items_count ?? 0;
 
   useEffect(() => {
@@ -197,7 +200,7 @@ export default function Nav() {
 
   return (
     <>
-    <header className={`nav${scrolled ? " scrolled" : ""}${open ? " menu-open" : ""}`}>
+    <header className={`nav${scrolled ? " scrolled" : ""}${open ? " menu-open" : ""}${light ? " light" : ""}`}>
       <nav className="nav-inner" aria-label="Global">
         <Link className="nav-logo" href="/" aria-label="ZEV Technologies home">
           <ZevLogo />
@@ -247,7 +250,7 @@ export default function Nav() {
       {/* One persistent flyout — switching nav items swaps content and animates
           height only; the panel background never re-fades. */}
       <div
-        className={`mega${open ? " open" : ""}`}
+        className={`mega${open ? " open" : ""}${light ? " light" : ""}`}
         style={{ height: open ? panelHeight : 0 }}
         onMouseEnter={cancelClose}
         onMouseLeave={scheduleClose}
@@ -302,7 +305,7 @@ export default function Nav() {
 
     {/* Blur curtain — blurs the page behind an open dropdown. Outside the
         header so its backdrop-filter isn't nested in the nav's own filter. */}
-    <div className={`mega-overlay${open ? " open" : ""}`} onClick={() => setOpen(null)} />
+    <div className={`mega-overlay${open ? " open" : ""}${light ? " light" : ""}`} onClick={() => setOpen(null)} />
     </>
   );
 }
