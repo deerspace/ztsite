@@ -16,6 +16,7 @@
   --dark: #000;
   --dark-soft: #101012;
   --dark-2: #1d1d1f;
+  --nav-bg: #202125; /* top-nav + dropdown background (placeholder grey) */
   --dark-3: #2a2a2e;
   --on-dark: #f5f5f7;
   --on-dark-2: #a1a1a6;
@@ -177,16 +178,16 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(22, 22, 23, 0.8);
+  background: var(--nav-bg);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid transparent;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
-.nav.scrolled { background: rgba(22, 22, 23, 0.92); border-bottom-color: rgba(255, 255, 255, 0.08); }
-/* When a dropdown is open the bar goes fully opaque so it and the flyout
-   read as one continuous solid block (apple.com behaviour). */
-.nav.menu-open { background: #1d1d1f; border-bottom-color: transparent; }
+.nav.scrolled { border-bottom-color: rgba(255, 255, 255, 0.08); }
+/* When a dropdown is open the bar and the flyout read as one continuous
+   solid block (apple.com behaviour) — both use --nav-bg. */
+.nav.menu-open { border-bottom-color: transparent; }
 .nav-inner {
   max-width: var(--maxw-wide);
   height: var(--nav-h);
@@ -242,7 +243,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
   left: 0; right: 0;
   top: var(--nav-h);
   /* Opaque, same colour as the open nav bar — one continuous block. */
-  background: #1d1d1f;
+  background: var(--nav-bg);
   z-index: 1001;
   opacity: 0;
   visibility: hidden;
