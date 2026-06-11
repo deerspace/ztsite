@@ -596,6 +596,13 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .show-stage.light { background: #fff; }
 .show-stage.soft { background: var(--bg-soft); }
 .show-stage.charcoal { background: linear-gradient(160deg,#1c1c1f,#0c0c0e); }
+
+/* apple-style dark "product story" statement section (iPhone battery-moment layout) */
+.story { background: #000; padding: clamp(110px, 17vw, 220px) 0; }
+.story-inner { max-width: var(--maxw-wide); margin: 0 auto; padding: 0 clamp(24px, 6vw, 90px); }
+.story-head { font-size: clamp(40px, 6vw, 72px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; color: var(--on-dark); }
+.story-copy { margin-top: clamp(20px, 2.4vw, 32px); font-size: clamp(17px, 1.5vw, 21px); font-weight: 500; line-height: 1.5; color: var(--on-dark-2); max-width: 42ch; }
+.story-copy b { color: var(--on-dark); font-weight: 600; }
 .show-stage img { width: 100%; height: auto; }
 
 /* spec strip */

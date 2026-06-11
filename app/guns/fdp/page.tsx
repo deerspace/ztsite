@@ -49,24 +49,22 @@ export default function FdpShowcase() {
         ]}
       />
 
-      {/* Deployed — light band */}
-      <section className="band-light" id="fold">
-        <div className="show-feature split">
-          <Reveal>
-            <p className="kicker">Deployed</p>
-            <h2>Up in a heartbeat.</h2>
-            <p>
-              One motion brings the FDP to full length and locks it rigid. Run it as a 16″ carbine or a
-              pistol-length platform — the manual of arms never changes.
-            </p>
-            <Link className="link-arrow" href="/buy/fdp" style={{ marginTop: 18, display: "inline-flex" }}>
-              Configure yours <span>›</span>
-            </Link>
-          </Reveal>
-          <Reveal className="show-stage charcoal">
-            <Image src="/products/fdp-deployed.jpg" alt="Shooting the deployed FDP carbine at the range" width={2000} height={1333} sizes="(max-width: 834px) 100vw, 580px" />
-          </Reveal>
-        </div>
+      {/* Deployed — dark */}
+      <section className="show-feature split" id="fold">
+        <Reveal>
+          <p className="kicker">Deployed</p>
+          <h2>Up in a heartbeat.</h2>
+          <p>
+            One motion brings the FDP to full length and locks it rigid. Run it as a 16″ carbine or a
+            pistol-length platform — the manual of arms never changes.
+          </p>
+          <Link className="link-arrow" href="/buy/fdp" style={{ marginTop: 18, display: "inline-flex" }}>
+            Configure yours <span>›</span>
+          </Link>
+        </Reveal>
+        <Reveal className="show-stage charcoal">
+          <Image src="/products/fdp-deployed.jpg" alt="Shooting the deployed FDP carbine at the range" width={2000} height={1333} sizes="(max-width: 834px) 100vw, 580px" />
+        </Reveal>
       </section>
 
       {/* Detail — soft band */}
@@ -81,6 +79,20 @@ export default function FdpShowcase() {
             <p>
               The hinge is the hard part — so ZEV and Magpul over-built it. Positive lockup, zero
               play, and a finish that shrugs off the field.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Statement — apple-style dark "product story" moment */}
+      <section className="story">
+        <div className="story-inner">
+          <Reveal>
+            <h2 className="story-head">Footprint.<br />All-time low.</h2>
+            <p className="story-copy">
+              A clean-sheet folding hinge collapses the FDP to a fraction of its deployed length —
+              a <b>full-size 9mm platform</b> that slips into a pack and stands up rigid in a single
+              motion. From the truck to the trail to the range, always ready.
             </p>
           </Reveal>
         </div>
