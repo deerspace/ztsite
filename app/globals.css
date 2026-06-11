@@ -550,7 +550,7 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
    One large card in focus, neighbours peeking; the active card's caption fades
    in at the top and its image slowly zooms. Card width + aspect are viewport-
    responsive: wide and landscape on desktop, narrower and portrait on mobile. */
-.highlights { --hl-card-w: min(86vw, 900px); padding: clamp(56px, 8vw, 104px) 0; }
+.highlights { --hl-card-w: min(86vw, 900px); --hl-edge: max(24px, calc((100vw - var(--maxw-wide)) / 2 + 24px)); padding: clamp(56px, 8vw, 104px) 0; }
 .hl-head { max-width: var(--maxw-wide); margin: 0 auto; padding: 0 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
 .hl-headings .eyebrow { color: var(--accent); }
 .hl-head h2 { font-size: clamp(28px, 3.6vw, 46px); font-weight: 600; letter-spacing: -0.02em; margin-top: 8px; }
@@ -560,10 +560,10 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
 .hl-btn { width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 19px; cursor: pointer; transition: background 0.2s, opacity 0.2s; }
 .hl-btn:hover { background: rgba(255, 255, 255, 0.2); }
 .hl-btn:disabled { opacity: 0.3; cursor: default; }
-.hl-track { display: flex; gap: clamp(14px, 1.6vw, 22px); overflow-x: auto; scroll-snap-type: x mandatory; padding-block: 28px 4px; padding-inline: max(24px, calc((100vw - var(--hl-card-w)) / 2)); scrollbar-width: none; touch-action: pan-x pan-y; cursor: grab; }
+.hl-track { display: flex; gap: clamp(14px, 1.6vw, 22px); overflow-x: auto; scroll-snap-type: x mandatory; padding-block: 28px 4px; padding-left: var(--hl-edge); padding-right: max(24px, calc(100vw - var(--hl-edge) - var(--hl-card-w))); scrollbar-width: none; touch-action: pan-x pan-y; cursor: grab; }
 .hl-track:active { cursor: grabbing; }
 .hl-track::-webkit-scrollbar { display: none; }
-.hl-card { position: relative; scroll-snap-align: center; flex: 0 0 var(--hl-card-w); aspect-ratio: 16 / 10; border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; outline-offset: 3px; }
+.hl-card { position: relative; scroll-snap-align: start; flex: 0 0 var(--hl-card-w); aspect-ratio: 16 / 10; border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; outline-offset: 3px; }
 .hl-card img { transition: transform 10s ease-out; }
 /* Very slow, subtle zoom once a card becomes the centred one. */
 .hl-card.is-active img { transform: scale(1.06); }
