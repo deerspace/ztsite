@@ -4,6 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+// The track's snap line: its left padding edge, which lines up with the
+// "See it in action" heading text. The focused tile aligns its left edge here.
+const snapLine = (el: HTMLDivElement) =>
+  el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).paddingLeft);
+
 export interface Highlight {
   kind: "image" | "product" | "statement";
   eyebrow: string;
@@ -13,9 +18,10 @@ export interface Highlight {
   alt?: string;
 }
 
-// apple.com "Get the highlights" reel: one large card in focus with the
-// neighbours peeking, the active card's caption fading in at the top and its
-// image very slowly zooming. Click/tap any card (or the paddles) to centre it.
+// apple.com "Get the highlights" reel: one large card in focus with the next
+// ones peeking on the right, the active card's caption fading in at the top and
+// its image very slowly zooming. The focused card's left edge lines up with the
+// heading. Click/tap any card (or the paddles) to bring it into focus.
 export default function Highlights({
   eyebrow,
   heading,
@@ -33,17 +39,18 @@ export default function Highlights({
   const raf = useRef(0);
   const [active, setActive] = useState(0);
 
-  // The card whose centre is nearest the track's centre is the active one.
+  // The active card is the one whose left edge sits nearest the track's snap
+  // line — the left padding, which lines up with the "See it in action" heading.
   const measure = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
     const els = el.querySelectorAll<HTMLElement>(".hl-card");
-    const trackMid = el.getBoundingClientRect().left + el.clientWidth / 2;
+    const line = snapLine(el);
     let best = 0;
     let bestDist = Infinity;
     els.forEach((c, i) => {
       const r = c.getBoundingClientRect();
-      const d = Math.abs(r.left + r.width / 2 - trackMid);
+      const d = Math.abs(r.left - line);
       if (d < bestDist) { bestDist = d; best = i; }
     });
     setActive(best);
@@ -71,9 +78,8 @@ export default function Highlights({
     if (!el) return;
     const card = el.querySelectorAll<HTMLElement>(".hl-card")[i];
     if (!card) return;
-    const trackMid = el.getBoundingClientRect().left + el.clientWidth / 2;
     const r = card.getBoundingClientRect();
-    el.scrollTo({ left: el.scrollLeft + (r.left + r.width / 2 - trackMid), behavior: "smooth" });
+    el.scrollTo({ left: el.scrollLeft + (r.left - snapLine(el)), behavior: "smooth" });
   };
 
   // Click-drag scrubbing on desktop; native touch scrolling handles mobile.
