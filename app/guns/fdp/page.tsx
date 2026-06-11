@@ -49,39 +49,24 @@ export default function FdpShowcase() {
         ]}
       />
 
-      {/* Folded — light band */}
+      {/* Deployed — light band */}
       <section className="band-light" id="fold">
         <div className="show-feature split">
-          <Reveal className="show-stage soft">
-            <Image src="/products/fdp-folded.jpg" alt="FDP folded flat" width={1000} height={1000} />
-          </Reveal>
           <Reveal>
-            <p className="kicker">Folded</p>
-            <h2>Folds to nothing.</h2>
+            <p className="kicker">Deployed</p>
+            <h2>Up in a heartbeat.</h2>
             <p>
-              Developed with Magpul, the FDP collapses on itself to a fraction of its deployed length —
-              small enough to stow, fast enough to trust. No tools, no fumbling.
+              One motion brings the FDP to full length and locks it rigid. Run it as a 16″ carbine or a
+              pistol-length platform — the manual of arms never changes.
             </p>
+            <Link className="link-arrow" href="/buy/fdp" style={{ marginTop: 18, display: "inline-flex" }}>
+              Configure yours <span>›</span>
+            </Link>
+          </Reveal>
+          <Reveal className="show-stage charcoal">
+            <Image src="/products/fdp-deployed.jpg" alt="Shooting the deployed FDP carbine at the range" width={2000} height={1333} sizes="(max-width: 834px) 100vw, 580px" />
           </Reveal>
         </div>
-      </section>
-
-      {/* Deployed — charcoal stage on dark */}
-      <section className="show-feature split">
-        <Reveal>
-          <p className="kicker">Deployed</p>
-          <h2>Up in a heartbeat.</h2>
-          <p>
-            One motion brings the FDP to full length and locks it rigid. Run it as a 16″ carbine or a
-            pistol-length platform — the manual of arms never changes.
-          </p>
-          <Link className="link-arrow" href="/buy/fdp" style={{ marginTop: 18, display: "inline-flex" }}>
-            Configure yours <span>›</span>
-          </Link>
-        </Reveal>
-        <Reveal className="show-stage charcoal">
-          <Image src="/products/fdp-deployed.jpg" alt="Shooting the deployed FDP carbine at the range" width={2000} height={1333} sizes="(max-width: 834px) 100vw, 580px" />
-        </Reveal>
       </section>
 
       {/* Detail — soft band */}
